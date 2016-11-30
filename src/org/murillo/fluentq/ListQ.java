@@ -180,13 +180,9 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     <S> ListQ<S> selectI(Function<Iteration<T, S>, S> selector);
 
-    ListQ<T> selectISelf(Function<Iteration<T, T>, T> selector);
-
     <S> ListQ<S> selectMany(Function<T, Collection<S>> selector);
 
     <S> ListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector);
-
-    ListQ<T> selectSelf(Function<T, T> selector);
 
     ListQ<T> shuffle();
 
@@ -247,6 +243,8 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
     String toString(String separator);
 
     String toString(String separator, Function<T, String> toString);
+    
+    T[] toTypedArray(Class<T> clazz);
 
     ListQ<T> union(Collection<T> collection);
 

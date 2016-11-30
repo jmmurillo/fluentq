@@ -1,5 +1,6 @@
 package org.murillo.fluentq;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,7 +9,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -146,14 +146,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return result;
     }
     
-    public static <S> ArrayList<S> unwrapOptional(ListQ<Optional<S>> list){
-        ArrayListQ<S> result = new ArrayListQ<>(list.size());
-        for(Optional<S> item : list){
-            if(item.isPresent()) result.add(item.get());
-            else result.add(null);
-        }
-        return result;
-    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="to primitive arrays">
@@ -456,35 +448,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             }
         }
         return result;
-    }
-
-    @Override
-    public ListQ<T> selectSelf(Function<T, T> selector) {
-        ArrayListQ<T> result = new ArrayListQ<>(this.size());
-        for (T item : this) {
-            result.add(selector.apply(item));
-        }
-        this.clear();
-        this.addAll(result);
-        return this;
-    }
-
-    @Override
-    public ListQ<T> selectISelf(Function<Iteration<T, T>, T> selector) {
-        ArrayListQ<T> result = new ArrayListQ<>(this.size());
-        try {
-            for (int i = 0; i < this.size(); i++) {
-                Iteration<T, T> iteration = new Iteration(this.get(i), i);
-                result.add(selector.apply(iteration));
-            }
-        } catch (BreakLoopException ex) {
-            if (ex.isInitialized()) {
-                result.add((T) ex.getReturned());
-            }
-        }
-        this.clear();
-        this.addAll(result);
-        return this;
     }
 
 //</editor-fold>
@@ -862,7 +825,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     public ListQ<T> distinctSelf(BiPredicate<T, T> equalTest) {
         return _distinct(equalTest, true);
     }
-
+    
     private ListQ<T> _distinct(BiPredicate<T, T> equalTest, boolean inPlace) {
         if (inPlace) {
             SelfImplementation.distinct(this, equalTest);
@@ -872,14 +835,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         }
     }
 
-    private ListQ<T> _distinctI(BiPredicate<T, T> equalTest, boolean inPlace) {
-        if (inPlace) {
-            SelfImplementation.distinct(this, equalTest);
-            return this;
-        } else {
-            return NewListImplementation.distinct(this, equalTest);
-        }
-    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="union">
@@ -1022,7 +977,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             result.add(clazz.cast(item));
         }
         return result;
-    }
+    }   
     
 //<editor-fold defaultstate="collapsed" desc="numerical">
     @Override
@@ -1751,6 +1706,12 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         }
     }
 
+    @Override
+    public T[] toTypedArray(Class<T> clazz) {
+        T[] array = (T[]) Array.newInstance(clazz, this.size());
+        return this.toArray(array);
+    }
+
     private static class SelfImplementation {
 
         static <A> void where(ArrayListQ<A> thisList, Predicate<A> selector) {
@@ -1784,9 +1745,10 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             boolean inDeletionRange = false;
             int rangeStart = 0;
             int i = 0;
+            int oldi = 0;
             try {
-                for (; i < thisList.size() - 1; i++) {
-                    Iteration<A, Boolean> iteration = new Iteration<>(thisList.get(i), i);
+                for (; i < thisList.size() - 1; i++, oldi++) {
+                    Iteration<A, Boolean> iteration = new Iteration<>(thisList.get(i), oldi);
                     boolean matches = selector.test(iteration);
                     if (inDeletionRange && matches) {
                         inDeletionRange = false;
@@ -1798,7 +1760,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                     }
                 }
 
-                Iteration<A, Boolean> iteration = new Iteration<>(thisList.get(i), i);
+                Iteration<A, Boolean> iteration = new Iteration<>(thisList.get(i), oldi);
                 boolean matches = selector.test(iteration);
                 if (inDeletionRange) {
                     thisList.removeRange(rangeStart, matches ? i : i + 1);
