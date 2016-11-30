@@ -632,19 +632,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return item;
     }
 
-    @Override
-    public Iteration<T, Void> randomElementI() {
-        int index = randomGenerator.nextInt(this.size());
-        T item = this.get(index);
-        return new Iteration<>(item, index);
-    }
-
-    @Override
-    public Iteration<T, Void> randomElementI(Random random) {
-        int index = random.nextInt(this.size());
-        T item = this.get(index);
-        return new Iteration<>(item, index);
-    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="find">
@@ -1712,6 +1699,15 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return this.toArray(array);
     }
 
+    @Override
+    public ListQ<Iteration<T,T>> toIterations(){
+        ArrayListQ<Iteration<T,T>> result = new ArrayListQ<>(this.size());
+        for(int i = 0; i< this.size();i++){
+            result.add(new Iteration<>(this.get(i), i));
+        }
+        return result;
+    }
+    
     private static class SelfImplementation {
 
         static <A> void where(ArrayListQ<A> thisList, Predicate<A> selector) {

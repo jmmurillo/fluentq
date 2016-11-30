@@ -168,10 +168,6 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     T randomElement(Random random);
 
-    Iteration<T, Void> randomElementI();
-
-    Iteration<T, Void> randomElementI(Random random);
-
     ListQ<T> reverse();
 
     ListQ<T> reverseSelf();
@@ -231,6 +227,8 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
     ListQ<T> takeWhileISelf(Predicate<Iteration<T, Boolean>> condition);
 
     ListQ<T> takeWhileSelf(Predicate<T> condition);
+    
+    ListQ<Iteration<T,T>> toIterations();
 
     <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector);
 

@@ -48,29 +48,6 @@ public class PickOneTests {
     }
     
     @Test
-    public void last_happypath() {
-        String last = list.last();
-        Assert.assertEquals("e", last);
-    }
-   
-    @Test(expected = IllegalStateException.class)
-    public void last_empty() {
-        new ArrayListQ().last();
-    }
-    
-    @Test
-    public void lastOrDefault_happypath() {
-        String last = list.lastOrDefault();
-        Assert.assertEquals("e", last);
-    }
-    
-    @Test
-    public void lastOrDefault_empty() {
-        String last = new ArrayListQ<String>().lastOrDefault();
-        Assert.assertNull(last);
-    }
-    
-    @Test
     public void first_predicate_happypath() {
         String first = list.first(x -> Character.isDigit(x.charAt(0)));
         Assert.assertEquals("2", first);
@@ -92,6 +69,29 @@ public class PickOneTests {
         String first = list.firstOrDefault(x -> x.length() > 1);
         Assert.assertNull(first);
     }
+    
+    @Test
+    public void last_happypath() {
+        String last = list.last();
+        Assert.assertEquals("e", last);
+    }
+   
+    @Test(expected = IllegalStateException.class)
+    public void last_empty() {
+        new ArrayListQ().last();
+    }
+    
+    @Test
+    public void lastOrDefault_happypath() {
+        String last = list.lastOrDefault();
+        Assert.assertEquals("e", last);
+    }
+    
+    @Test
+    public void lastOrDefault_empty() {
+        String last = new ArrayListQ<String>().lastOrDefault();
+        Assert.assertNull(last);
+    }   
     
     @Test
     public void last_predicate_happypath() {
@@ -116,4 +116,69 @@ public class PickOneTests {
         Assert.assertNull(last);
     }
     
+    @Test
+    public void single_happypath() {
+        String single = new ArrayListQ<String>("test").single();
+        Assert.assertEquals("test", single);
+    }
+   
+    @Test(expected = IllegalStateException.class)
+    public void single_empty() {
+        new ArrayListQ().single();
+    }
+    
+    @Test(expected = IllegalStateException.class)
+    public void single_two() {
+        new ArrayListQ<>("test1", "test2").single();
+    }
+    
+    @Test
+    public void singleOrDefault_happypath() {
+        String single = new ArrayListQ<String>("test").singleOrDefault();
+        Assert.assertEquals("test", single);
+    }
+    
+    @Test
+    public void singleOrDefault_empty() {
+        String single = new ArrayListQ<String>().singleOrDefault();
+        Assert.assertNull(single);
+    }   
+    
+    @Test(expected = IllegalStateException.class)
+    public void singleOrDefault_two() {
+        new ArrayListQ<>("test1", "test2").singleOrDefault();
+    }
+    
+    @Test
+    public void single_predicate_happypath() {
+        String single = list.single(x -> "3".equals(x));
+        Assert.assertEquals("3", single);
+    }
+    
+    @Test(expected = IllegalStateException.class)
+    public void single_predicate_empty() {
+        list.single(x -> x.length() > 1);
+    }
+   
+    @Test(expected = IllegalStateException.class)
+    public void single_predicate_two() {
+        new ArrayListQ<>("test1", "test2").single(x -> !x.isEmpty());
+    }
+    
+    @Test
+    public void singleOrDefault_predicate_happypath() {
+        String single = list.singleOrDefault(x -> "3".equals(x));
+        Assert.assertEquals("3", single);
+    }
+    
+    @Test
+    public void singleOrDefault_predicate_empty() {
+        String single = list.singleOrDefault(x -> x.length() > 1);
+        Assert.assertNull(single);
+    }
+    
+    @Test(expected = IllegalStateException.class)
+    public void singleOrDefault_predicate_two() {
+        new ArrayListQ<>("test1", "test2").singleOrDefault(x -> !x.isEmpty());
+    }
 }
