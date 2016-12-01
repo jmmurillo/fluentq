@@ -5,24 +5,26 @@
  */
 package org.murillo.fluentq;
 
+import java.util.Optional;
+
 final class BreakLoopException extends RuntimeException{
 
     private Iteration<?,?> lastIteration;
-    private Object returned = null;
+    private Optional<?> returned = null;
     private boolean initialized = false;
     
     public BreakLoopException() {
         super(null, null, false, false);
     }
     
-    public <T,R> BreakLoopException(R returned, Iteration<T,R> lastIteration) {
+    public <T,R> BreakLoopException(Optional<R> returned, Iteration<T,R> lastIteration) {
         this();
         this.returned = returned;
         this.lastIteration = lastIteration;
         this.initialized = true;
     }
 
-    public Object getReturned() {
+    public Optional<?> getReturned() {
         return returned;
     }
 
@@ -31,7 +33,7 @@ final class BreakLoopException extends RuntimeException{
     }
 
     public boolean isInitialized() {
-        return initialized;
+        return returned != null && returned.isPresent();
     }       
     
 }

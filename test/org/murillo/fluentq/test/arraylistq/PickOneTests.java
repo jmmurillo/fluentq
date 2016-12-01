@@ -5,6 +5,7 @@
  */
 package org.murillo.fluentq.test.arraylistq;
 
+import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -180,5 +181,26 @@ public class PickOneTests {
     @Test(expected = IllegalStateException.class)
     public void singleOrDefault_predicate_two() {
         new ArrayListQ<>("test1", "test2").singleOrDefault(x -> !x.isEmpty());
+    }
+    
+    public void randomElement_happypath(){
+        String randomElement = list.randomElement();
+        Assert.assertTrue(list.contains(randomElement));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void randomElement_empty(){
+        new ArrayListQ<String>().randomElement();
+    }
+    
+    @Test
+    public void randomElement_custom_happypath(){
+        String randomElement = list.randomElement(new Random(123));
+        Assert.assertEquals("!", randomElement);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void randomElement_custom_empty(){
+        new ArrayListQ<String>().randomElement(new Random(123));
     }
 }

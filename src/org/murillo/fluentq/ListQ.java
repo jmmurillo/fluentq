@@ -8,6 +8,7 @@ package org.murillo.fluentq;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -58,29 +59,29 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     ListQ<T> distinctSelf(BiPredicate<T, T> equalTest);
 
-    <S> S findFirst(Function<T, S> selector);
+    <S> Optional<S> findFirst(Function<T, Optional<S>> selector);
 
-    <S> S findFirstI(Function<Iteration<T, S>, S> selector);
+    <S> Optional<S> findFirstI(Function<Iteration<T, S>, Optional<S>> selector);
 
-    <S> S findLast(Function<T, S> selector);
+    <S> Optional<S> findLast(Function<T, Optional<S>> selector);
 
-    <S> S findLastI(Function<Iteration<T, S>, S> selector);
+    <S> Optional<S> findLastI(Function<Iteration<T, S>, Optional<S>> selector);
 
-    <S> ListQ<S> findLeading(Function<T, S> selector);
+    <S> ListQ<S> findLeading(Function<T, Optional<S>> selector);
 
-    <S> ListQ<S> findLeading(Function<T, S> selector, int maxCount);
+    <S> ListQ<S> findLeading(Function<T, Optional<S>> selector, int maxCount);
 
-    <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, S> selector);
+    <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, Optional<S>> selector);
 
-    <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, S> selector, int maxCount);
+    <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, Optional<S>> selector, int maxCount);
 
-    <S> ListQ<S> findTrailing(Function<T, S> selector);
+    <S> ListQ<S> findTrailing(Function<T, Optional<S>> selector);
 
-    <S> ListQ<S> findTrailing(Function<T, S> selector, int maxCount);
+    <S> ListQ<S> findTrailing(Function<T, Optional<S>> selector, int maxCount);
 
-    <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, S> selector);
+    <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, Optional<S>> selector);
 
-    <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, S> selector, int maxCount);
+    <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, Optional<S>> selector, int maxCount);
 
     T first();
 
@@ -168,6 +169,10 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     T randomElement(Random random);
 
+    ListQ<T> range(int start, int count);
+    
+    ListQ<T> rangeSelf(int start, int count);
+    
     ListQ<T> reverse();
 
     ListQ<T> reverseSelf();

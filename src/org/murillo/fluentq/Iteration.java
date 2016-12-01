@@ -5,6 +5,8 @@
  */
 package org.murillo.fluentq;
 
+import java.util.Optional;
+
 public class Iteration<T,R>{
     private final T value;
     private final int index;
@@ -22,11 +24,11 @@ public class Iteration<T,R>{
         return index;
     }
 
-    public R breakLoop() throws BreakLoopException {
+    public Optional<R> breakLoop() throws BreakLoopException {
         throw new BreakLoopException();
     }
 
-    public R breakLoop(R returned) throws BreakLoopException {
+    public Optional<R> breakLoop(Optional<R> returned) throws BreakLoopException {
         throw new BreakLoopException(returned, this);
     }        
 }

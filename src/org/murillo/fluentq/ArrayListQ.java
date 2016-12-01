@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -133,19 +134,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         }
         return result;
     }
-    
-    public static <S> ArrayListQ<S> newList(Iterable<S> iterable) {
-        ArrayListQ<S> result = new ArrayListQ<>();
-        iterable.forEach(x -> result.add(x));
-        return result;
-    }
-        
-    public static <S> ArrayListQ<S> newList(Iterator<S> iterator) {
-        ArrayListQ<S> result = new ArrayListQ<>();
-        iterator.forEachRemaining(x -> result.add(x));
-        return result;
-    }
-    
+  
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="to primitive arrays">
@@ -341,6 +330,14 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     public ArrayListQ(int reservedSize) {
         super(reservedSize);
         this.randomGenerator = new Random();
+    }
+    
+    public ArrayListQ(Iterable<T> iterable) {
+        iterable.forEach(x -> this.add(x));
+    }
+        
+    public ArrayListQ(Iterator<T> iterator) {
+        iterator.forEachRemaining(x -> this.add(x));
     }
 //</editor-fold>
 
@@ -620,6 +617,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
     @Override
     public T randomElement() {
+        if(this.isEmpty()) throw new IllegalStateException("The sequence contains no elements.");
         int index = randomGenerator.nextInt(this.size());
         T item = this.get(index);
         return item;
@@ -627,6 +625,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
     @Override
     public T randomElement(Random random) {
+        if(this.isEmpty()) throw new IllegalStateException("The sequence contains no elements.");
         int index = random.nextInt(this.size());
         T item = this.get(index);
         return item;
@@ -636,76 +635,76 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="find">
     @Override
-    public <S> S findFirst(Function<T, S> selector) {
+    public <S> Optional<S> findFirst(Function<T, Optional<S>> selector) {
         for (T item : this) {
-            S selected = selector.apply(item);
-            if (selected != null) {
+            Optional<S> selected = selector.apply(item);
+            if (selected.isPresent()) {
                 return selected;
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public <S> S findLast(Function<T, S> selector) {
+    public <S> Optional<S> findLast(Function<T, Optional<S>> selector) {
         for (int i = this.size() - 1; i >= 0; i--) {
             T item = this.get(i);
-            S selected = selector.apply(item);
-            if (selected != null) {
+            Optional<S> selected = selector.apply(item);
+            if (selected.isPresent()) {
                 return selected;
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public <S> S findFirstI(Function<Iteration<T, S>, S> selector) {
+    public <S> Optional<S> findFirstI(Function<Iteration<T, S>, Optional<S>> selector) {
         try {
             for (int i = 0; i < this.size(); i++) {
                 Iteration<T, S> iteration = new Iteration<>(this.get(i), i);
-                S selected = selector.apply(iteration);
-                if (selected != null) {
-                    return selected;
-                }
+                Optional<S> selected = selector.apply(iteration);
+                if (selected.isPresent()) {
+                return selected;
+            }
             }
         } catch (BreakLoopException ex) {
             if (ex.isInitialized()) {
-                return (S) ex.getReturned();
+                return (Optional<S>) ex.getReturned();
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public <S> S findLastI(Function<Iteration<T, S>, S> selector) {
+    public <S> Optional<S> findLastI(Function<Iteration<T, S>, Optional<S>> selector) {
         try {
             for (int i = this.size() - 1; i >= 0; i--) {
                 Iteration<T, S> iteration = new Iteration<>(this.get(i), i);
-                S selected = selector.apply(iteration);
-                if (selected != null) {
-                    return selected;
-                }
+                Optional<S> selected = selector.apply(iteration);
+                if (selected.isPresent()) {
+                return selected;
+            }
             }
         } catch (BreakLoopException ex) {
             if (ex.isInitialized()) {
-                return (S) ex.getReturned();
+                return (Optional<S>) ex.getReturned();
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public <S> ListQ<S> findLeading(Function<T, S> selector) {
+    public <S> ListQ<S> findLeading(Function<T, Optional<S>> selector) {
         return findLeading(selector, this.size());
     }
 
     @Override
-    public <S> ListQ<S> findLeading(Function<T, S> selector, int maxCount) {
+    public <S> ListQ<S> findLeading(Function<T, Optional<S>> selector, int maxCount) {
         ArrayListQ<S> result = new ArrayListQ<>(maxCount);
         for (T item : this) {
-            S selected = selector.apply(item);
-            if (selected != null) {
-                result.add(selected);
+            Optional<S> selected = selector.apply(item);
+            if (selected.isPresent()) {
+                result.add(selected.get());
                 if (maxCount == result.size()) {
                     break;
                 }
@@ -715,20 +714,20 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, S> selector) {
+    public <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, Optional<S>> selector) {
         return findLeadingI(selector, this.size());
     }
 
     @Override
-    public <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, S> selector, int maxCount) {
+    public <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, Optional<S>> selector, int maxCount) {
         ArrayListQ<S> result = new ArrayListQ<>(maxCount);
         try {
             for (int i = 0; i < this.size(); i++) {
                 T item = this.get(i);
                 Iteration<T, S> iteration = new Iteration<>(item, i);
-                S selected = selector.apply(iteration);
-                if (selected != null) {
-                    result.add(selected);
+                Optional<S> selected = selector.apply(iteration);
+                if (selected.isPresent()) {
+                    result.add(selected.get());
                     if (maxCount == result.size()) {
                         break;
                     }
@@ -743,17 +742,17 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public <S> ListQ<S> findTrailing(Function<T, S> selector) {
+    public <S> ListQ<S> findTrailing(Function<T, Optional<S>> selector) {
         return findTrailing(selector, this.size());
     }
 
     @Override
-    public <S> ListQ<S> findTrailing(Function<T, S> selector, int maxCount) {
+    public <S> ListQ<S> findTrailing(Function<T, Optional<S>> selector, int maxCount) {
         ArrayListQ<S> result = new ArrayListQ<>(maxCount);
         for (int i = this.size() - 1; i >= 0; i--) {
-            S selected = selector.apply(this.get(i));
-            if (selected != null) {
-                result.add(selected);
+            Optional<S> selected = selector.apply(this.get(i));
+            if (selected.isPresent()) {
+                result.add(selected.get());
                 if (maxCount == result.size()) {
                     break;
                 }
@@ -764,19 +763,19 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, S> selector) {
+    public <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, Optional<S>> selector) {
         return findTrailingI(selector, this.size());
     }
 
     @Override
-    public <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, S> selector, int maxCount) {
+    public <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, Optional<S>> selector, int maxCount) {
         ArrayListQ<S> result = new ArrayListQ<>(maxCount);
         try {
             for (int i = this.size() - 1; i >= 0; i--) {
                 Iteration<T, S> iteration = new Iteration<>(this.get(i), i);
-                S selected = selector.apply(iteration);
-                if (selected != null) {
-                    result.add(selected);
+                Optional<S> selected = selector.apply(iteration);
+                if (selected.isPresent()) {
+                    result.add(selected.get());
                     if (maxCount == result.size()) {
                         break;
                     }
@@ -1297,7 +1296,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             }
         } catch (BreakLoopException ex) {
             if (ex.isInitialized()) {
-                result.addAll((Collection<S>) ex.getReturned());
+                result.addAll((Collection<S>) ex.getReturned().get());
             }
         }
         return result;
@@ -1531,7 +1530,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         } catch (BreakLoopException ex) {
-            if (ex.isInitialized() && (Boolean) ex.getReturned()) {
+            if (ex.isInitialized() && (Boolean) ex.getReturned().get()) {
                 toIndex++;
             }
         }
@@ -1556,7 +1555,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         } catch (BreakLoopException ex) {
-            if (ex.isInitialized() && (Boolean) ex.getReturned()) {
+            if (ex.isInitialized() && (Boolean) ex.getReturned().get()) {
                 fromIndex++;
             }
         }
@@ -1635,7 +1634,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         } catch (BreakLoopException ex) {
-            if (ex.isInitialized() && (Boolean) ex.getReturned()) {
+            if (ex.isInitialized() && (Boolean) ex.getReturned().get()) {
                 fromIndex++;
             }
         }
@@ -1659,7 +1658,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         } catch (BreakLoopException ex) {
-            if (ex.isInitialized() && (Boolean) ex.getReturned()) {
+            if (ex.isInitialized() && (Boolean) ex.getReturned().get()) {
                 toIndex++;
             }
         }
@@ -1706,6 +1705,18 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             result.add(new Iteration<>(this.get(i), i));
         }
         return result;
+    }
+    
+    @Override
+    public ListQ<T> range(int start, int count){
+        return new ArrayListQ<>(this.subList(start, start + count));
+    }
+    
+    @Override
+    public ListQ<T> rangeSelf(int start, int count){
+        this.removeRange(start + count - 1, this.size());
+        this.removeRange(0, start);
+        return this;
     }
     
     private static class SelfImplementation {
@@ -1764,7 +1775,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                     thisList.remove(i);
                 }
             } catch (BreakLoopException ex) {
-                boolean matches = ex.isInitialized() && (Boolean) ex.getReturned();
+                boolean matches = ex.isInitialized() && (Boolean) ex.getReturned().get();
                 if (inDeletionRange) {
                     thisList.removeRange(rangeStart, thisList.size());
                 } else {
@@ -1826,7 +1837,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                     }
                 }
             } catch (BreakLoopException ex) {
-                boolean matches = ex.isInitialized() && (Boolean) ex.getReturned();
+                boolean matches = ex.isInitialized() && (Boolean) ex.getReturned().get();
                 if (matches) {
                     result.add((A) ex.getLastIteration().getValue());
                 }
