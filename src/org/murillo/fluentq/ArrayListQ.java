@@ -137,6 +137,39 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
   
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="fromIterations">
+    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iteration<S,?>... iterations){
+        return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
+    }
+    
+    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iterable<Iteration<S,?>> iterations) {
+        return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
+    }
+    
+    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iterator<Iteration<S,?>> iterations){
+        return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
+    }
+    
+    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Collection<Iteration<S,?>> iterations) {
+        return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
+    }
+    
+    private static <S> ArrayListQ<S> _fromIterations(boolean keepGaps, ArrayListQ<Iteration<S,?>> iterations) {
+        ArrayListQ<S> result;
+        if(keepGaps){
+            HashMap<Integer, S> toMap = iterations.toMap(iteration -> iteration.getIndex(), iteration -> iteration.getValue());
+            int maxIndex = (int) iterations.maxAsLong(iteration -> iteration.getIndex());
+            result = new ArrayListQ<>(maxIndex+1);
+            for(int i = 0; i < maxIndex; i++){
+                result.add(toMap.get(i));
+            }
+        }else{
+            result = (ArrayListQ<S>) iterations.orderSelf().select(iteration -> iteration.getValue());
+        }
+        return result;
+    }
+//</editor-fold>  
+    
 //<editor-fold defaultstate="collapsed" desc="to primitive arrays">
     public static byte[] toByteArray(ListQ<? extends Number> list){
         byte[] result = new byte[list.size()];
@@ -344,12 +377,13 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 //<editor-fold defaultstate="collapsed" desc="aggregate">
     @Override
     public T aggregate(BiFunction<T, T, T> function) {
-        T aggregate = this.first();
+        if(this.isEmpty()) throw new IllegalStateException("The sequence contains no elements.");
+        T aggregate = this.get(0);
         for (int i = 1; i < this.size(); i++) {
             T item = this.get(i);
             aggregate = function.apply(aggregate, item);
         }
-        return aggregate;
+        return aggregate;        
     }
 
     @Override
@@ -477,108 +511,59 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="pick one">
+
     @Override
-    public T first() {
+    public Optional<T> first() {
         if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
+            return Optional.empty();
         } else {
-            return this.get(0);
+            return Optional.ofNullable(this.get(0));
         }
     }
 
     @Override
-    public T firstOrDefault() {
-        if (this.isEmpty()) {
-            return null;
-        } else {
-            return this.get(0);
-        }
-    }
-
-    @Override
-    public T first(Predicate<T> test) {
+    public Optional<T> first(Predicate<T> test) {
         for (T item : this) {
             if (test.test(item)) {
-                return item;
+                return Optional.ofNullable(item);
             }
         }
-        throw new IllegalStateException("The sequence contains no elements.");
+        return Optional.empty();
     }
 
     @Override
-    public T firstOrDefault(Predicate<T> test) {
-        for (T item : this) {
-            if (test.test(item)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public T last() throws IndexOutOfBoundsException {
+    public Optional<T> last() {
         if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
+            return Optional.empty();
         } else {
-            return this.get(this.size() - 1);
+            return Optional.ofNullable(this.get(this.size() - 1));
         }
     }
 
     @Override
-    public T lastOrDefault() {
-        if (this.isEmpty()) {
-            return null;
-        } else {
-            return this.get(this.size() - 1);
-        }
-    }
-
-    @Override
-    public T last(Predicate<T> test) {
+    public Optional<T> last(Predicate<T> test) {
         for (int i = this.size() - 1; i >= 0; i--) {
             T item = this.get(i);
             if (test.test(item)) {
-                return item;
+                return Optional.ofNullable(item);
             }
         }
-        throw new IllegalStateException("The sequence contains no elements.");
+        return Optional.empty();
     }
 
     @Override
-    public T lastOrDefault(Predicate<T> test) {
-        for (int i = this.size() - 1; i >= 0; i--) {
-            T item = this.get(i);
-            if (test.test(item)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public T single() {
+    public Optional<T> single() {
         if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
+            return Optional.empty();
         } else if (this.size() > 1) {
             throw new IllegalStateException("The sequence contains more than one element.");
         } else {
-            return this.get(0);
+            return Optional.ofNullable(this.get(0));
         }
     }
 
     @Override
-    public T singleOrDefault() {
-        if (this.isEmpty()) {
-            return null;
-        } else if (this.size() > 1) {
-            throw new IllegalStateException("The sequence contains more than one element.");
-        } else {
-            return this.get(0);
-        }
-    }
-
-    @Override
-    public T single(Predicate<T> test) {
+    public Optional<T> single(Predicate<T> test) {
         boolean found = false;
         T result = null;
         for (T item : this) {
@@ -591,28 +576,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         }
-        if (!found) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        } else {
-            return result;
-        }
-    }
-
-    @Override
-    public T singleOrDefault(Predicate<T> test) {
-        boolean found = false;
-        T result = null;
-        for (T item : this) {
-            if (test.test(item)) {
-                if (found) {
-                    throw new IllegalStateException("The sequence contains more than one matching element.");
-                } else {
-                    result = item;
-                    found = true;
-                }
-            }
-        }
-        return result;
+        return Optional.ofNullable(result);
     }
 
     @Override
@@ -631,164 +595,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return item;
     }
 
-//</editor-fold>
-
-//<editor-fold defaultstate="collapsed" desc="find">
-    @Override
-    public <S> Optional<S> findFirst(Function<T, Optional<S>> selector) {
-        for (T item : this) {
-            Optional<S> selected = selector.apply(item);
-            if (selected.isPresent()) {
-                return selected;
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public <S> Optional<S> findLast(Function<T, Optional<S>> selector) {
-        for (int i = this.size() - 1; i >= 0; i--) {
-            T item = this.get(i);
-            Optional<S> selected = selector.apply(item);
-            if (selected.isPresent()) {
-                return selected;
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public <S> Optional<S> findFirstI(Function<Iteration<T, S>, Optional<S>> selector) {
-        try {
-            for (int i = 0; i < this.size(); i++) {
-                Iteration<T, S> iteration = new Iteration<>(this.get(i), i);
-                Optional<S> selected = selector.apply(iteration);
-                if (selected.isPresent()) {
-                return selected;
-            }
-            }
-        } catch (BreakLoopException ex) {
-            if (ex.isInitialized()) {
-                return (Optional<S>) ex.getReturned();
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public <S> Optional<S> findLastI(Function<Iteration<T, S>, Optional<S>> selector) {
-        try {
-            for (int i = this.size() - 1; i >= 0; i--) {
-                Iteration<T, S> iteration = new Iteration<>(this.get(i), i);
-                Optional<S> selected = selector.apply(iteration);
-                if (selected.isPresent()) {
-                return selected;
-            }
-            }
-        } catch (BreakLoopException ex) {
-            if (ex.isInitialized()) {
-                return (Optional<S>) ex.getReturned();
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public <S> ListQ<S> findLeading(Function<T, Optional<S>> selector) {
-        return findLeading(selector, this.size());
-    }
-
-    @Override
-    public <S> ListQ<S> findLeading(Function<T, Optional<S>> selector, int maxCount) {
-        ArrayListQ<S> result = new ArrayListQ<>(maxCount);
-        for (T item : this) {
-            Optional<S> selected = selector.apply(item);
-            if (selected.isPresent()) {
-                result.add(selected.get());
-                if (maxCount == result.size()) {
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, Optional<S>> selector) {
-        return findLeadingI(selector, this.size());
-    }
-
-    @Override
-    public <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, Optional<S>> selector, int maxCount) {
-        ArrayListQ<S> result = new ArrayListQ<>(maxCount);
-        try {
-            for (int i = 0; i < this.size(); i++) {
-                T item = this.get(i);
-                Iteration<T, S> iteration = new Iteration<>(item, i);
-                Optional<S> selected = selector.apply(iteration);
-                if (selected.isPresent()) {
-                    result.add(selected.get());
-                    if (maxCount == result.size()) {
-                        break;
-                    }
-                }
-            }
-        } catch (BreakLoopException ex) {
-            if (ex.isInitialized()) {
-                result.add((S) ex.getReturned());
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public <S> ListQ<S> findTrailing(Function<T, Optional<S>> selector) {
-        return findTrailing(selector, this.size());
-    }
-
-    @Override
-    public <S> ListQ<S> findTrailing(Function<T, Optional<S>> selector, int maxCount) {
-        ArrayListQ<S> result = new ArrayListQ<>(maxCount);
-        for (int i = this.size() - 1; i >= 0; i--) {
-            Optional<S> selected = selector.apply(this.get(i));
-            if (selected.isPresent()) {
-                result.add(selected.get());
-                if (maxCount == result.size()) {
-                    break;
-                }
-            }
-        }
-        Collections.reverse(result);
-        return result;
-    }
-
-    @Override
-    public <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, Optional<S>> selector) {
-        return findTrailingI(selector, this.size());
-    }
-
-    @Override
-    public <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, Optional<S>> selector, int maxCount) {
-        ArrayListQ<S> result = new ArrayListQ<>(maxCount);
-        try {
-            for (int i = this.size() - 1; i >= 0; i--) {
-                Iteration<T, S> iteration = new Iteration<>(this.get(i), i);
-                Optional<S> selected = selector.apply(iteration);
-                if (selected.isPresent()) {
-                    result.add(selected.get());
-                    if (maxCount == result.size()) {
-                        break;
-                    }
-                }
-            }
-        } catch (BreakLoopException ex) {
-            if (ex.isInitialized()) {
-                result.add((S) ex.getReturned());
-            }
-        }
-        Collections.reverse(result);
-        return result;
-    }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="distinct">

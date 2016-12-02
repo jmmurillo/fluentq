@@ -59,37 +59,9 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     ListQ<T> distinctSelf(BiPredicate<T, T> equalTest);
 
-    <S> Optional<S> findFirst(Function<T, Optional<S>> selector);
+    Optional<T> first();
 
-    <S> Optional<S> findFirstI(Function<Iteration<T, S>, Optional<S>> selector);
-
-    <S> Optional<S> findLast(Function<T, Optional<S>> selector);
-
-    <S> Optional<S> findLastI(Function<Iteration<T, S>, Optional<S>> selector);
-
-    <S> ListQ<S> findLeading(Function<T, Optional<S>> selector);
-
-    <S> ListQ<S> findLeading(Function<T, Optional<S>> selector, int maxCount);
-
-    <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, Optional<S>> selector);
-
-    <S> ListQ<S> findLeadingI(Function<Iteration<T, S>, Optional<S>> selector, int maxCount);
-
-    <S> ListQ<S> findTrailing(Function<T, Optional<S>> selector);
-
-    <S> ListQ<S> findTrailing(Function<T, Optional<S>> selector, int maxCount);
-
-    <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, Optional<S>> selector);
-
-    <S> ListQ<S> findTrailingI(Function<Iteration<T, S>, Optional<S>> selector, int maxCount);
-
-    T first();
-
-    T first(Predicate<T> test);
-
-    T firstOrDefault();
-
-    T firstOrDefault(Predicate<T> test);
+    Optional<T> first(Predicate<T> test);
 
     void forEachI(Consumer<Iteration<T, Void>> action);
 
@@ -117,13 +89,9 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     ListQ<T> intersectSelf(Collection<T> collection, BiPredicate<T, T> equalTest);
 
-    T last() throws IndexOutOfBoundsException;
+    Optional<T> last() throws IndexOutOfBoundsException;
 
-    T last(Predicate<T> test);
-
-    T lastOrDefault();
-
-    T lastOrDefault(Predicate<T> test);
+    Optional<T> last(Predicate<T> test);
 
     double maxAsDouble();
 
@@ -193,13 +161,9 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     ListQ<T> shuffleSelf(Random random);
 
-    T single();
+    Optional<T> single();
 
-    T single(Predicate<T> test);
-
-    T singleOrDefault();
-
-    T singleOrDefault(Predicate<T> test);
+    Optional<T> single(Predicate<T> test);
 
     ListQ<T> skip(int howMany);
 
