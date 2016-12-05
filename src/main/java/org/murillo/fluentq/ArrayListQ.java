@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalLong;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -154,11 +156,13 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
     
-    private static <S> ArrayListQ<S> _fromIterations(boolean keepGaps, ArrayListQ<Iteration<S,?>> iterations) {
+    private static <S> ArrayListQ<S> _fromIterations(boolean keepGaps, ArrayListQ<Iteration<S,?>> iterations) {        
+        if(iterations.isEmpty()) return new ArrayListQ<>();
+        
         ArrayListQ<S> result;
         if(keepGaps){
             HashMap<Integer, S> toMap = iterations.toMap(iteration -> iteration.getIndex(), iteration -> iteration.getValue());
-            int maxIndex = (int) iterations.maxAsLong(iteration -> iteration.getIndex());
+            int maxIndex = (int) iterations.maxAsLong(iteration -> iteration.getIndex()).getAsLong();
             result = new ArrayListQ<>(maxIndex+1);
             for(int i = 0; i < maxIndex; i++){
                 result.add(toMap.get(i));
@@ -724,33 +728,33 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> concatItems(T... items) {
+    public ListQ<T> concat(T... items) {
         return this._insert(this.size(), Arrays.asList(items), false);
     }
 
     @Override
-    public ListQ<T> concatItemsSelf(T... items) {
+    public ListQ<T> concatSelf(T... items) {
         return this._insert(this.size(), Arrays.asList(items), true);
     }
 
     @Override
     public ListQ<T> insert(int index, Collection<T> collection) {
-        return this._insert(this.size(), collection, false);
+        return this._insert(index, collection, false);
     }
 
     @Override
     public ListQ<T> insertSelf(int index, Collection<T> collection) {
-        return this._insert(this.size(), collection, true);
+        return this._insert(index, collection, true);
     }
 
     @Override
-    public ListQ<T> insertItems(int index, T... items) {
-        return this._insert(this.size(), Arrays.asList(items), false);
+    public ListQ<T> insert(int index, T... items) {
+        return this._insert(index, Arrays.asList(items), false);
     }
 
     @Override
-    public ListQ<T> insertItemsSelf(int index, T... items) {
-        return this._insert(this.size(), Arrays.asList(items), true);
+    public ListQ<T> insertSelf(int index, T... items) {
+        return this._insert(index, Arrays.asList(items), true);
     }
 
     private ListQ<T> _insert(int index, Collection<T> collection, boolean inPlace) {
@@ -763,6 +767,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 //</editor-fold>
 
+    @Override
     public <S> ListQ<S> cast(Class<S> clazz) {
         ArrayListQ<S> result = new ArrayListQ<>(this.size());
         for (T item : this) {
@@ -817,10 +822,9 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public double maxAsDouble() {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        }
+    public OptionalDouble maxAsDouble() {
+        if (this.isEmpty()) return OptionalDouble.empty();
+
         double max = Double.NEGATIVE_INFINITY;
         boolean found = false;
         for (T item : this) {
@@ -830,17 +834,14 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 max = d;
             }
         }
-        if (!found) {
-            throw new IllegalStateException("The sequence contains no matching elements.");
-        }
-        return max;
+        if (!found) return OptionalDouble.empty();
+        else return OptionalDouble.of(max);
     }
 
     @Override
-    public double maxAsDouble(ToDoubleFunction<T> toNumber) {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        }
+    public OptionalDouble maxAsDouble(ToDoubleFunction<T> toNumber) {
+        if (this.isEmpty()) return OptionalDouble.empty();
+        
         double max = Double.NEGATIVE_INFINITY;
         for (T item : this) {
             double d = toNumber.applyAsDouble(item);
@@ -848,14 +849,13 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 max = d;
             }
         }
-        return max;
+        return OptionalDouble.of(max);
     }
 
     @Override
-    public long maxAsLong() {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        }
+    public OptionalLong maxAsLong() {
+        if (this.isEmpty()) return OptionalLong.empty();
+        
         long max = Long.MIN_VALUE;
         boolean found = false;
         for (T item : this) {
@@ -865,17 +865,15 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 max = l;
             }
         }
-        if (!found) {
-            throw new IllegalStateException("The sequence contains no matching elements.");
-        }
-        return max;
+        
+        if (!found) return OptionalLong.empty();
+        else return OptionalLong.of(max);
     }
 
     @Override
-    public long maxAsLong(ToLongFunction<T> toNumber) {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        }
+    public OptionalLong maxAsLong(ToLongFunction<T> toNumber) {
+        if (this.isEmpty()) return OptionalLong.empty();
+        
         long max = Long.MIN_VALUE;
         for (T item : this) {
             long l = toNumber.applyAsLong(item);
@@ -883,14 +881,13 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 max = l;
             }
         }
-        return max;
+        return OptionalLong.of(max);
     }
 
     @Override
-    public double minAsDouble() {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        }
+    public OptionalDouble minAsDouble() {
+        if (this.isEmpty()) return OptionalDouble.empty();
+        
         double min = Double.POSITIVE_INFINITY;
         boolean found = false;
         for (T item : this) {
@@ -900,17 +897,15 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 min = d;
             }
         }
-        if (!found) {
-            throw new IllegalStateException("The sequence contains no matching elements.");
-        }
-        return min;
+        
+        if (!found) return OptionalDouble.empty();
+        else return OptionalDouble.of(min);
     }
 
     @Override
-    public double minAsDouble(ToDoubleFunction<T> toNumber) {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        }
+    public OptionalDouble minAsDouble(ToDoubleFunction<T> toNumber) {
+        if (this.isEmpty()) return OptionalDouble.empty();
+        
         double min = Double.POSITIVE_INFINITY;
         for (T item : this) {
             double d = toNumber.applyAsDouble(item);
@@ -918,14 +913,13 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 min = d;
             }
         }
-        return min;
+        return OptionalDouble.of(min);
     }
 
     @Override
-    public long minAsLong() {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        }
+    public OptionalLong minAsLong() {
+        if (this.isEmpty()) return OptionalLong.empty();
+
         long min = Long.MAX_VALUE;
         boolean found = false;
         for (T item : this) {
@@ -935,17 +929,15 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 min = l;
             }
         }
-        if (!found) {
-            throw new IllegalStateException("The sequence contains no matching elements.");
-        }
-        return min;
+        
+        if (!found) return OptionalLong.empty();
+        else return OptionalLong.of(min);
     }
 
     @Override
-    public long minAsLong(ToLongFunction<T> toNumber) {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("The sequence contains no elements.");
-        }
+    public OptionalLong minAsLong(ToLongFunction<T> toNumber) {
+        if (this.isEmpty()) return OptionalLong.empty();
+        
         long min = Long.MAX_VALUE;
         for (T item : this) {
             long l = toNumber.applyAsLong(item);
@@ -953,7 +945,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 min = l;
             }
         }
-        return min;
+        return OptionalLong.of(min);
     }
 //</editor-fold>
 
@@ -1028,6 +1020,24 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             }
         }
         return -1;
+    }
+    
+    @Override
+    public ListQ<ListQ<T>> clusterEvery(int numberOfItems) {
+        ArrayListQ<ListQ<T>> result = new ArrayListQ<>();
+        ListQ<T> currentList = null;
+        int modular;
+        for(int i = 0; i < this.size(); i++){
+            modular = i%numberOfItems;
+            if(modular == 0){
+                currentList = new ArrayListQ<>(numberOfItems);
+                result.add(currentList);
+            }
+            T item = this.get(i);
+            currentList.add(item);            
+        }
+        
+        return result;
     }
 //</editor-fold>
 

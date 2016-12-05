@@ -31,14 +31,16 @@ public class UnionTests {
     
     @Test
     public void union_self_happypath() {
-        list1.unionSelf(list2);
+        ListQ<String> union = list1.unionSelf(list2);
+        Assert.assertSame(list1, union);
         Assert.assertArrayEquals(list1.toTypedArray(String.class), new String[]{"a", "2", "!", "3", "a", null, "b", "xyz"});
     }
 
     @Test
     public void union_equality_self_happypath() {
-        list1.unionSelf(list2, (a,b) ->  
+        ListQ<String> union = list1.unionSelf(list2, (a,b) ->  
                 a==b || (a!=null && b!=null && a.length() == b.length()));
+        Assert.assertSame(list1, union);
         Assert.assertArrayEquals(list1.toTypedArray(String.class), new String[]{"a", "2", "!", "3", "a", null, "xyz"});
     }
 

@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalLong;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -35,17 +37,17 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     <S> ListQ<S> cast(Class<S> clazz);
 
-    //<editor-fold defaultstate="collapsed" desc="cluster">
     ListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest);
+    
+    ListQ<ListQ<T>> clusterEvery(int numberOfItems);
 
-    //<editor-fold defaultstate="collapsed" desc="concat insert">
     ListQ<T> concat(Collection<T> collection);
 
-    ListQ<T> concatItems(T... items);
-
-    ListQ<T> concatItemsSelf(T... items);
+    ListQ<T> concat(T... items);
 
     ListQ<T> concatSelf(Collection<T> collection);
+    
+    ListQ<T> concatSelf(T... items);
 
     int count();
 
@@ -75,11 +77,11 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     ListQ<T> insert(int index, Collection<T> collection);
 
-    ListQ<T> insertItems(int index, T... items);
-
-    ListQ<T> insertItemsSelf(int index, T... items);
+    ListQ<T> insert(int index, T... items);
 
     ListQ<T> insertSelf(int index, Collection<T> collection);
+    
+    ListQ<T> insertSelf(int index, T... items);
 
     ListQ<T> intersect(Collection<T> collection);
 
@@ -93,21 +95,21 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     Optional<T> last(Predicate<T> test);
 
-    double maxAsDouble();
+    OptionalDouble maxAsDouble();
 
-    double maxAsDouble(ToDoubleFunction<T> toNumber);
+    OptionalDouble maxAsDouble(ToDoubleFunction<T> toNumber);
 
-    long maxAsLong();
+    OptionalLong maxAsLong();
 
-    long maxAsLong(ToLongFunction<T> toNumber);
+    OptionalLong maxAsLong(ToLongFunction<T> toNumber);
 
-    double minAsDouble();
+    OptionalDouble minAsDouble();
 
-    double minAsDouble(ToDoubleFunction<T> toNumber);
+    OptionalDouble minAsDouble(ToDoubleFunction<T> toNumber);
 
-    long minAsLong();
+    OptionalLong minAsLong();
 
-    long minAsLong(ToLongFunction<T> toNumber);
+    OptionalLong minAsLong(ToLongFunction<T> toNumber);
 
     ListQ<T> order();
 

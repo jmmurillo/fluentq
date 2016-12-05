@@ -36,14 +36,14 @@ public class WhereTests {
     @Test
     public void whereSelf_happypath() {       
         ListQ<String> alpha = list.whereSelf(x -> Character.isAlphabetic(x.charAt(0)));
-        Assert.assertArrayEquals(alpha.toTypedArray(String.class), new String[]{"a","e"});
         Assert.assertSame(list, alpha);
+        Assert.assertArrayEquals(alpha.toTypedArray(String.class), new String[]{"a","e"});
     }
    
     @Test
     public void whereISelf_happypath() {
         ListQ<String> evenIndices = list.whereISelf(x -> x.getIndex()%2 == 0);
-        Assert.assertArrayEquals(evenIndices.toTypedArray(String.class), new String[]{"a","!","e"});
         Assert.assertSame(list, evenIndices);
+        Assert.assertArrayEquals(evenIndices.toTypedArray(String.class), new String[]{"a","!","e"});
     }
 }

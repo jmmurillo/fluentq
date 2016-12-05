@@ -33,17 +33,19 @@ public class DistinctTests {
 
     @Test
     public void distinct_self_happypath() {
-        list.distinctSelf();
+        ListQ<String> distinct = list.distinctSelf();
+        Assert.assertSame(list, distinct);
         Assert.assertArrayEquals(list.toTypedArray(String.class), new String[]{"a", "2", "!", "3", null});
     }
 
     @Test
     public void distinct_equality_self_happypath() {
-        list.distinctSelf((a, b)
+        ListQ<String> distinct = list.distinctSelf((a, b)
                 -> a == b
                 || ((a != null && b != null)
                 && ((Character.isAlphabetic(a.charAt(0)) && Character.isAlphabetic(b.charAt(0)))
                 || (Character.isDigit(a.charAt(0)) && Character.isDigit(b.charAt(0))))));
+        Assert.assertSame(list, distinct);
         Assert.assertArrayEquals(list.toTypedArray(String.class), new String[]{"a", "2", "!", null});
     }
 
