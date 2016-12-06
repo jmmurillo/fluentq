@@ -27,7 +27,7 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     <S> S accumulateI(BiFunction<S, Iteration<T, S>, S> function, S initial);
 
-    T aggregate(BiFunction<T, T, T> function);
+    Optional<T> aggregate(BiFunction<T, T, T> function);
 
     boolean all(Predicate<T> test);
 
@@ -135,9 +135,9 @@ public interface ListQ<T> extends List<T>, java.io.Serializable
 
     ListQ<T> orderSelf(ToIntBiFunction<T, T> compareTo);
 
-    T randomElement();
+    Optional<T> randomElement();
 
-    T randomElement(Random random);
+    Optional<T> randomElement(Random random);
 
     ListQ<T> range(int start, int count);
     

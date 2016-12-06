@@ -100,23 +100,25 @@ public class PickOneTests {
     }
     
     public void randomElement_happypath(){
-        String randomElement = list.randomElement();
+        String randomElement = list.randomElement().get();
         Assert.assertTrue(list.contains(randomElement));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void randomElement_empty(){
-        new ArrayListQ<String>().randomElement();
+        Optional<String> randomElement = new ArrayListQ<String>().randomElement();
+        Assert.assertTrue(!randomElement.isPresent());
     }
     
     @Test
     public void randomElement_custom_happypath(){
-        String randomElement = list.randomElement(new Random(123));
+        String randomElement = list.randomElement(new Random(123)).get();
         Assert.assertEquals("!", randomElement);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void randomElement_custom_empty(){
-        new ArrayListQ<String>().randomElement(new Random(123));
+        Optional<String> randomElement = new ArrayListQ<String>().randomElement(new Random(123));
+        Assert.assertTrue(!randomElement.isPresent());
     }
 }

@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntBiFunction;
 import java.util.function.ToLongFunction;
+import java.util.stream.BaseStream;
 
 /**
  *
@@ -370,24 +371,30 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
     
     public ArrayListQ(Iterable<T> iterable) {
+        this();
         iterable.forEach(x -> this.add(x));
     }
         
     public ArrayListQ(Iterator<T> iterator) {
+        this();
         iterator.forEachRemaining(x -> this.add(x));
+    }
+    
+    public ArrayListQ(BaseStream<T,?> stream) {
+        this(stream.iterator());
     }
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="aggregate">
     @Override
-    public T aggregate(BiFunction<T, T, T> function) {
-        if(this.isEmpty()) throw new IllegalStateException("The sequence contains no elements.");
+    public Optional<T> aggregate(BiFunction<T, T, T> function) {
+        if(this.isEmpty()) Optional.empty();
         T aggregate = this.get(0);
         for (int i = 1; i < this.size(); i++) {
             T item = this.get(i);
             aggregate = function.apply(aggregate, item);
         }
-        return aggregate;        
+        return Optional.of(aggregate);        
     }
 
     @Override
@@ -584,19 +591,19 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public T randomElement() {
-        if(this.isEmpty()) throw new IllegalStateException("The sequence contains no elements.");
+    public Optional<T> randomElement() {
+        if(this.isEmpty()) return Optional.empty();
         int index = randomGenerator.nextInt(this.size());
         T item = this.get(index);
-        return item;
+        return Optional.of(item);
     }
 
     @Override
-    public T randomElement(Random random) {
-        if(this.isEmpty()) throw new IllegalStateException("The sequence contains no elements.");
+    public Optional<T> randomElement(Random random) {
+        if(this.isEmpty()) return Optional.empty();
         int index = random.nextInt(this.size());
         T item = this.get(index);
-        return item;
+        return Optional.of(item);
     }
 
 //</editor-fold>

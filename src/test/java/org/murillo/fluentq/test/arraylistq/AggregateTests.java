@@ -10,7 +10,7 @@ public class AggregateTests {
     @Test
     public void aggregate_happypath() {
         ListQ<String> list = new ArrayListQ("a","b","c","d","e");
-        String result = list.aggregate((x, y) -> x + ", " + y);
+        String result = list.aggregate((x, y) -> x + ", " + y).get();
         Assert.assertEquals("a, b, c, d, e", result);
     }
 
