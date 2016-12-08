@@ -8,7 +8,8 @@ import org.murillo.fluentq.ListQ;
 
 public class ConcatInsertTests {
 
-    ListQ<String> list1, list2;
+    ListQ<String> list1;
+    ListQ<String> list2;
 
     @Before
     public void initList() {
@@ -18,13 +19,13 @@ public class ConcatInsertTests {
 
     @Test
     public void concat_happypath() {
-        ListQ<String> concat = list1.concat(list2);
+        ListQ<String> concat = list1.concat(list2).hold();
         Assert.assertArrayEquals(concat.toTypedArray(String.class), new String[]{"a", "2", "!", "3", "a", null, "a", null, "b", "xyz"});
     }
     
     @Test
     public void concat_array_happypath() {
-        ListQ<String> concat = list1.concat(list2.toTypedArray(String.class));
+        ListQ<String> concat = list1.concat(list2.toTypedArray(String.class)).hold();
         Assert.assertArrayEquals(concat.toTypedArray(String.class), new String[]{"a", "2", "!", "3", "a", null, "a", null, "b", "xyz"});
     }
     
@@ -44,13 +45,13 @@ public class ConcatInsertTests {
     
     @Test
     public void insert_happypath() {
-        ListQ<String> insert = list1.insert(3, list2);
+        ListQ<String> insert = list1.insert(3, list2).hold();
         Assert.assertArrayEquals(insert.toTypedArray(String.class), new String[]{"a", "2", "!", "a", null, "b", "xyz", "3", "a", null});
     }
     
     @Test
     public void insert_array_happypath() {
-        ListQ<String> insert = list1.insert(3, list2.toTypedArray(String.class));
+        ListQ<String> insert = list1.insert(3, list2.toTypedArray(String.class)).hold();
         Assert.assertArrayEquals(insert.toTypedArray(String.class), new String[]{"a", "2", "!", "a", null, "b", "xyz", "3", "a", null});
     }
     

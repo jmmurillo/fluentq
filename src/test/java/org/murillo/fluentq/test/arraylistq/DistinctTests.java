@@ -17,7 +17,7 @@ public class DistinctTests {
 
     @Test
     public void distinct_happypath() {
-        ListQ<String> distinct = list.distinct();
+        ListQ<String> distinct = list.distinct().hold();
         Assert.assertArrayEquals(distinct.toTypedArray(String.class), new String[]{"a", "2", "!", "3", null});
     }
 
@@ -27,7 +27,7 @@ public class DistinctTests {
                 -> a == b
                 || ((a != null && b != null)
                 && ((Character.isAlphabetic(a.charAt(0)) && Character.isAlphabetic(b.charAt(0)))
-                || (Character.isDigit(a.charAt(0)) && Character.isDigit(b.charAt(0))))));
+                || (Character.isDigit(a.charAt(0)) && Character.isDigit(b.charAt(0)))))).hold();
         Assert.assertArrayEquals(distinct.toTypedArray(String.class), new String[]{"a", "2", "!", null});
     }
 
