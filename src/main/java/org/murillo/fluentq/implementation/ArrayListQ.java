@@ -74,262 +74,364 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
 //<editor-fold defaultstate="collapsed" desc="newList">
-    public static <K, V> ArrayListQ<Map.Entry<K, V>> newList(Map<K, V> map) {
+    public static <K, V> ArrayListQ<Map.Entry<K, V>> ofEntries(Map<K, V> map) {
         return new ArrayListQ<>(map.entrySet());
     }
+
+    public static <S> ArrayListQ<S> ofObjects(S... array) {
+        ArrayListQ<S> result = new ArrayListQ<>(array);
+        return result;
+    }
     
-    public static ArrayListQ<Byte> newList(byte... array) {
+    public static ArrayListQ<Byte> of(byte... array) {
         ArrayListQ<Byte> result = new ArrayListQ<>(array.length);
         for (byte i : array) {
             result.add(i);
         }
         return result;
     }
-    
-    public static ArrayListQ<Short> newList(short... array) {
+
+    public static ArrayListQ<Short> of(short... array) {
         ArrayListQ<Short> result = new ArrayListQ<>(array.length);
         for (short i : array) {
             result.add(i);
         }
         return result;
     }
-    
-    public static ArrayListQ<Integer> newList(int... array) {
+
+    public static ArrayListQ<Integer> of(int... array) {
         ArrayListQ<Integer> result = new ArrayListQ<>(array.length);
         for (int i : array) {
             result.add(i);
         }
         return result;
     }
-    
-    public static ArrayListQ<Long> newList(long... array) {
+
+    public static ArrayListQ<Long> of(long... array) {
         ArrayListQ<Long> result = new ArrayListQ<>(array.length);
         for (long i : array) {
             result.add(i);
         }
         return result;
     }
-    
-    public static ArrayListQ<Float> newList(float... array) {
+
+    public static ArrayListQ<Float> of(float... array) {
         ArrayListQ<Float> result = new ArrayListQ<>(array.length);
         for (float i : array) {
             result.add(i);
         }
         return result;
     }
-    
-    public static ArrayListQ<Double> newList(double... array) {
+
+    public static ArrayListQ<Double> of(double... array) {
         ArrayListQ<Double> result = new ArrayListQ<>(array.length);
         for (double i : array) {
             result.add(i);
         }
         return result;
     }
-    
-    public static ArrayListQ<Boolean> newList(boolean... array) {
+
+    public static ArrayListQ<Boolean> of(boolean... array) {
         ArrayListQ<Boolean> result = new ArrayListQ<>(array.length);
         for (boolean i : array) {
             result.add(i);
         }
         return result;
     }
-    
-    public static ArrayListQ<Character> newList(char... array) {
+
+    public static ArrayListQ<Character> of(char... array) {
         ArrayListQ<Character> result = new ArrayListQ<>(array.length);
         for (char i : array) {
             result.add(i);
         }
         return result;
     }
-  
-//</editor-fold>
 
+    public static <S> ArrayListQ<ListQ<S>> ofLists(S[][] array) {
+        ArrayListQ<ListQ<S>> result = new ArrayListQ<>(array.length);
+        for (S[] i : array) {
+            result.add(new ArrayListQ<>(i));
+        }
+        return result;
+    }
+
+    public static ArrayListQ<ListQ<Byte>> ofLists(byte[][] array) {
+        ArrayListQ<ListQ<Byte>> result = new ArrayListQ<>(array.length);
+        for (byte[] i : array) {
+            result.add(ArrayListQ.of(i));
+        }
+        return result;
+    }
+
+    public static ArrayListQ<ListQ<Short>> ofLists(short[][] array) {
+        ArrayListQ<ListQ<Short>> result = new ArrayListQ<>(array.length);
+        for (short[] i : array) {
+            result.add(ArrayListQ.of(i));
+        }
+        return result;
+    }
+
+    public static ArrayListQ<ListQ<Integer>> ofLists(int[][] array) {
+        ArrayListQ<ListQ<Integer>> result = new ArrayListQ<>(array.length);
+        for (int[] i : array) {
+            result.add(ArrayListQ.of(i));
+        }
+        return result;
+    }
+
+    public static ArrayListQ<ListQ<Long>> ofLists(long[][] array) {
+        ArrayListQ<ListQ<Long>> result = new ArrayListQ<>(array.length);
+        for (long[] i : array) {
+            result.add(ArrayListQ.of(i));
+        }
+        return result;
+    }
+
+    public static ArrayListQ<ListQ<Float>> ofLists(float[][] array) {
+        ArrayListQ<ListQ<Float>> result = new ArrayListQ<>(array.length);
+        for (float[] i : array) {
+            result.add(ArrayListQ.of(i));
+        }
+        return result;
+    }
+
+    public static ArrayListQ<ListQ<Double>> ofLists(double[][] array) {
+        ArrayListQ<ListQ<Double>> result = new ArrayListQ<>(array.length);
+        for (double[] i : array) {
+            result.add(ArrayListQ.of(i));
+        }
+        return result;
+    }
+
+    public static ArrayListQ<ListQ<Boolean>> ofLists(boolean[][] array) {
+        ArrayListQ<ListQ<Boolean>> result = new ArrayListQ<>(array.length);
+        for (boolean[] i : array) {
+            result.add(ArrayListQ.of(i));
+        }
+        return result;
+    }
+
+    public static ArrayListQ<ListQ<Character>> ofLists(char[][] array) {
+        ArrayListQ<ListQ<Character>> result = new ArrayListQ<>(array.length);
+        for (char[] i : array) {
+            result.add(ArrayListQ.of(i));
+        }
+        return result;
+    }
+
+//</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="fromIterations">
-    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iteration<S,?>... iterations){
+    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iteration<S, ?>... iterations) {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
-    
-    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iterable<Iteration<S,?>> iterations) {
+
+    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iterable<Iteration<S, ?>> iterations) {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
-    
-    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iterator<Iteration<S,?>> iterations){
+
+    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iterator<Iteration<S, ?>> iterations) {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
-    
-    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Collection<Iteration<S,?>> iterations) {
+
+    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Collection<Iteration<S, ?>> iterations) {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
-    
-    private static <S> ArrayListQ<S> _fromIterations(boolean keepGaps, ArrayListQ<Iteration<S,?>> iterations) {        
-        if(iterations.isEmpty()) return new ArrayListQ<>();
-        
+
+    private static <S> ArrayListQ<S> _fromIterations(boolean keepGaps, ArrayListQ<Iteration<S, ?>> iterations) {
+        if (iterations.isEmpty()) {
+            return new ArrayListQ<>();
+        }
+
         ArrayListQ<S> result;
-        if(keepGaps){
+        if (keepGaps) {
             HashMap<Integer, S> toMap = iterations.toMap(iteration -> iteration.getIndex(), iteration -> iteration.getValue());
             int maxIndex = (int) iterations.maxAsLong(iteration -> iteration.getIndex()).getAsLong();
-            result = new ArrayListQ<>(maxIndex+1);
-            for(int i = 0; i < maxIndex; i++){
+            result = new ArrayListQ<>(maxIndex + 1);
+            for (int i = 0; i < maxIndex; i++) {
                 result.add(toMap.get(i));
             }
-        }else{
+        } else {
             result = (ArrayListQ<S>) iterations.orderSelf().select(iteration -> iteration.getValue());
         }
         return result;
     }
 //</editor-fold>  
-    
+
 //<editor-fold defaultstate="collapsed" desc="to primitive arrays">
-    public static byte[] toByteArray(ListQ<? extends Number> list){
+    public static byte[] toByteArray(ListQ<? extends Number> list) {
         byte[] result = new byte[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i).byteValue();
         }
         return result;
     }
-    
-    public static short[] toShortArray(ListQ<? extends Number> list){
+
+    public static short[] toShortArray(ListQ<? extends Number> list) {
         short[] result = new short[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i).shortValue();
         }
         return result;
     }
-    
-    public static int[] toIntArray(ListQ<? extends Number> list){
+
+    public static int[] toIntArray(ListQ<? extends Number> list) {
         int[] result = new int[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i).intValue();
         }
         return result;
     }
-    
-    public static long[] toLongArray(ListQ<? extends Number> list){
+
+    public static long[] toLongArray(ListQ<? extends Number> list) {
         long[] result = new long[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i).longValue();
         }
         return result;
     }
-    
-    public static float[] toFloatArray(ListQ<? extends Number> list){
+
+    public static float[] toFloatArray(ListQ<? extends Number> list) {
         float[] result = new float[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i).floatValue();
         }
         return result;
     }
-    
-    public static double[] toDoubleArray(ListQ<? extends Number> list){
+
+    public static double[] toDoubleArray(ListQ<? extends Number> list) {
         double[] result = new double[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i).doubleValue();
         }
         return result;
     }
-    
-    public static boolean[] toBooleanArray(ListQ<Boolean> list){
+
+    public static boolean[] toBooleanArray(ListQ<Boolean> list) {
         boolean[] result = new boolean[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i);
         }
         return result;
     }
-    
-    public static char[] toCharArray(ListQ<Character> list){
+
+    public static char[] toCharArray(ListQ<Character> list) {
         char[] result = new char[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             result[i] = list.get(i);
         }
         return result;
     }
-    
-    public static byte[] toByteArray(ListQ<? extends Number> list, byte nullValue){
+
+    public static byte[] toByteArray(ListQ<? extends Number> list, byte nullValue) {
         byte[] result = new byte[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             Number get = list.get(i);
-            if(get == null) result[i] = nullValue;
-            else result[i] = list.get(i).byteValue();
+            if (get == null) {
+                result[i] = nullValue;
+            } else {
+                result[i] = list.get(i).byteValue();
+            }
         }
         return result;
     }
-    
-    public static short[] toShortArray(ListQ<? extends Number> list, short nullValue){
+
+    public static short[] toShortArray(ListQ<? extends Number> list, short nullValue) {
         short[] result = new short[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             Number get = list.get(i);
-            if(get == null) result[i] = nullValue;
-            else result[i] = list.get(i).shortValue();
+            if (get == null) {
+                result[i] = nullValue;
+            } else {
+                result[i] = list.get(i).shortValue();
+            }
         }
         return result;
     }
-    
-    public static int[] toIntArray(ListQ<? extends Number> list, int nullValue){
+
+    public static int[] toIntArray(ListQ<? extends Number> list, int nullValue) {
         int[] result = new int[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             Number get = list.get(i);
-            if(get == null) result[i] = nullValue;
-            else result[i] = list.get(i).intValue();
+            if (get == null) {
+                result[i] = nullValue;
+            } else {
+                result[i] = list.get(i).intValue();
+            }
         }
         return result;
     }
-    
-    public static long[] toLongArray(ListQ<? extends Number> list, long nullValue){
+
+    public static long[] toLongArray(ListQ<? extends Number> list, long nullValue) {
         long[] result = new long[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             Number get = list.get(i);
-            if(get == null) result[i] = nullValue;
-            else result[i] = list.get(i).longValue();
+            if (get == null) {
+                result[i] = nullValue;
+            } else {
+                result[i] = list.get(i).longValue();
+            }
         }
         return result;
     }
-    
-    public static float[] toFloatArray(ListQ<? extends Number> list, float nullValue){
+
+    public static float[] toFloatArray(ListQ<? extends Number> list, float nullValue) {
         float[] result = new float[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             Number get = list.get(i);
-            if(get == null) result[i] = nullValue;
-            else result[i] = list.get(i).floatValue();
+            if (get == null) {
+                result[i] = nullValue;
+            } else {
+                result[i] = list.get(i).floatValue();
+            }
         }
         return result;
     }
-    
-    public static double[] toDoubleArray(ListQ<? extends Number> list, double nullValue){
+
+    public static double[] toDoubleArray(ListQ<? extends Number> list, double nullValue) {
         double[] result = new double[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             Number get = list.get(i);
-            if(get == null) result[i] = nullValue;
-            else result[i] = list.get(i).doubleValue();
+            if (get == null) {
+                result[i] = nullValue;
+            } else {
+                result[i] = list.get(i).doubleValue();
+            }
         }
         return result;
     }
-    
-    public static boolean[] toBooleanArray(ListQ<Boolean> list, boolean nullValue){
+
+    public static boolean[] toBooleanArray(ListQ<Boolean> list, boolean nullValue) {
         boolean[] result = new boolean[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             Boolean get = list.get(i);
-            if(get == null) result[i] = nullValue;
-            else result[i] = list.get(i);
+            if (get == null) {
+                result[i] = nullValue;
+            } else {
+                result[i] = list.get(i);
+            }
         }
         return result;
     }
-    
-    public static char[] toCharArray(ListQ<Character> list, char nullValue){
+
+    public static char[] toCharArray(ListQ<Character> list, char nullValue) {
         char[] result = new char[list.size()];
-        for(int i = 0; i < result.length; i++){
+        for (int i = 0; i < result.length; i++) {
             Character get = list.get(i);
-            if(get == null) result[i] = nullValue;
-            else result[i] = list.get(i);
+            if (get == null) {
+                result[i] = nullValue;
+            } else {
+                result[i] = list.get(i);
+            }
         }
         return result;
-    }       
+    }
 //</editor-fold>
-    
+
 //<editor-fold defaultstate="collapsed" desc="generate">
     public static <A> ArrayListQ<A> generate(Function<Iteration<A, A>, A> generator) {
         return generate(generator, Integer.MAX_VALUE);
     }
-    
+
     public static <A> ArrayListQ<A> generate(Function<Iteration<A, A>, A> generator, int maxCount) {
         ArrayListQ<A> result = new ArrayListQ<>();
         int count = 0;
@@ -371,18 +473,18 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         super(reservedSize);
         this.randomGenerator = new Random();
     }
-    
+
     public ArrayListQ(Iterable<T> iterable) {
         this();
         iterable.forEach(x -> this.add(x));
     }
-        
+
     public ArrayListQ(Iterator<T> iterator) {
         this();
         iterator.forEachRemaining(x -> this.add(x));
     }
-    
-    public ArrayListQ(BaseStream<T,?> stream) {
+
+    public ArrayListQ(BaseStream<T, ?> stream) {
         this(stream.iterator());
     }
 //</editor-fold>
@@ -398,13 +500,15 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 //<editor-fold defaultstate="collapsed" desc="aggregate">
     @Override
     public Optional<T> aggregate(BiFunction<T, T, T> function) {
-        if(this.isEmpty()) Optional.empty();
+        if (this.isEmpty()) {
+            Optional.empty();
+        }
         T aggregate = this.get(0);
         for (int i = 1; i < this.size(); i++) {
             T item = this.get(i);
             aggregate = function.apply(aggregate, item);
         }
-        return Optional.of(aggregate);        
+        return Optional.of(aggregate);
     }
 
     @Override
@@ -434,7 +538,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="where">
     @Override
     public EphemeralListQ<T> where(Predicate<T> selector) {
@@ -503,7 +606,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="all or any">
     @Override
     public boolean all(Predicate<T> test) {
@@ -532,7 +634,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="pick one">
-
     @Override
     public Optional<T> first() {
         if (this.isEmpty()) {
@@ -602,7 +703,9 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
     @Override
     public Optional<T> randomElement() {
-        if(this.isEmpty()) return Optional.empty();
+        if (this.isEmpty()) {
+            return Optional.empty();
+        }
         int index = randomGenerator.nextInt(this.size());
         T item = this.get(index);
         return Optional.of(item);
@@ -610,14 +713,15 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
     @Override
     public Optional<T> randomElement(Random random) {
-        if(this.isEmpty()) return Optional.empty();
+        if (this.isEmpty()) {
+            return Optional.empty();
+        }
         int index = random.nextInt(this.size());
         T item = this.get(index);
         return Optional.of(item);
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="distinct">
     @Override
     public EphemeralListQ<T> distinct() {
@@ -638,7 +742,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     public ListQ<T> distinctSelf(BiPredicate<T, T> equalTest) {
         return _distinct(equalTest, true);
     }
-    
+
     private ListQ<T> _distinct(BiPredicate<T, T> equalTest, boolean inPlace) {
         if (inPlace) {
             SelfImplementation.distinct(this, equalTest);
@@ -649,7 +753,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
 //</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="union">
     @Override
     public EphemeralListQ<T> union(Collection<T> collection) {
@@ -791,8 +894,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             result.add(clazz.cast(item));
         }
         return result;
-    }   
-    
+    }
+
 //<editor-fold defaultstate="collapsed" desc="numerical">
     @Override
     public double sumAsDouble() {
@@ -840,7 +943,9 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
     @Override
     public OptionalDouble maxAsDouble() {
-        if (this.isEmpty()) return OptionalDouble.empty();
+        if (this.isEmpty()) {
+            return OptionalDouble.empty();
+        }
 
         double max = Double.NEGATIVE_INFINITY;
         boolean found = false;
@@ -851,14 +956,19 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 max = d;
             }
         }
-        if (!found) return OptionalDouble.empty();
-        else return OptionalDouble.of(max);
+        if (!found) {
+            return OptionalDouble.empty();
+        } else {
+            return OptionalDouble.of(max);
+        }
     }
 
     @Override
     public OptionalDouble maxAsDouble(ToDoubleFunction<T> toNumber) {
-        if (this.isEmpty()) return OptionalDouble.empty();
-        
+        if (this.isEmpty()) {
+            return OptionalDouble.empty();
+        }
+
         double max = Double.NEGATIVE_INFINITY;
         for (T item : this) {
             double d = toNumber.applyAsDouble(item);
@@ -871,8 +981,10 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
     @Override
     public OptionalLong maxAsLong() {
-        if (this.isEmpty()) return OptionalLong.empty();
-        
+        if (this.isEmpty()) {
+            return OptionalLong.empty();
+        }
+
         long max = Long.MIN_VALUE;
         boolean found = false;
         for (T item : this) {
@@ -882,15 +994,20 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 max = l;
             }
         }
-        
-        if (!found) return OptionalLong.empty();
-        else return OptionalLong.of(max);
+
+        if (!found) {
+            return OptionalLong.empty();
+        } else {
+            return OptionalLong.of(max);
+        }
     }
 
     @Override
     public OptionalLong maxAsLong(ToLongFunction<T> toNumber) {
-        if (this.isEmpty()) return OptionalLong.empty();
-        
+        if (this.isEmpty()) {
+            return OptionalLong.empty();
+        }
+
         long max = Long.MIN_VALUE;
         for (T item : this) {
             long l = toNumber.applyAsLong(item);
@@ -903,8 +1020,10 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
     @Override
     public OptionalDouble minAsDouble() {
-        if (this.isEmpty()) return OptionalDouble.empty();
-        
+        if (this.isEmpty()) {
+            return OptionalDouble.empty();
+        }
+
         double min = Double.POSITIVE_INFINITY;
         boolean found = false;
         for (T item : this) {
@@ -914,15 +1033,20 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 min = d;
             }
         }
-        
-        if (!found) return OptionalDouble.empty();
-        else return OptionalDouble.of(min);
+
+        if (!found) {
+            return OptionalDouble.empty();
+        } else {
+            return OptionalDouble.of(min);
+        }
     }
 
     @Override
     public OptionalDouble minAsDouble(ToDoubleFunction<T> toNumber) {
-        if (this.isEmpty()) return OptionalDouble.empty();
-        
+        if (this.isEmpty()) {
+            return OptionalDouble.empty();
+        }
+
         double min = Double.POSITIVE_INFINITY;
         for (T item : this) {
             double d = toNumber.applyAsDouble(item);
@@ -935,7 +1059,9 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
     @Override
     public OptionalLong minAsLong() {
-        if (this.isEmpty()) return OptionalLong.empty();
+        if (this.isEmpty()) {
+            return OptionalLong.empty();
+        }
 
         long min = Long.MAX_VALUE;
         boolean found = false;
@@ -946,15 +1072,20 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 min = l;
             }
         }
-        
-        if (!found) return OptionalLong.empty();
-        else return OptionalLong.of(min);
+
+        if (!found) {
+            return OptionalLong.empty();
+        } else {
+            return OptionalLong.of(min);
+        }
     }
 
     @Override
     public OptionalLong minAsLong(ToLongFunction<T> toNumber) {
-        if (this.isEmpty()) return OptionalLong.empty();
-        
+        if (this.isEmpty()) {
+            return OptionalLong.empty();
+        }
+
         long min = Long.MAX_VALUE;
         for (T item : this) {
             long l = toNumber.applyAsLong(item);
@@ -1038,22 +1169,22 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         }
         return -1;
     }
-    
+
     @Override
     public ListQ<ListQ<T>> clusterEvery(int numberOfItems) {
         ArrayListQ<ListQ<T>> result = new ArrayListQ<>();
         ListQ<T> currentList = null;
         int modular;
-        for(int i = 0; i < this.size(); i++){
-            modular = i%numberOfItems;
-            if(modular == 0){
+        for (int i = 0; i < this.size(); i++) {
+            modular = i % numberOfItems;
+            if (modular == 0) {
                 currentList = new ArrayListQ<>(numberOfItems);
                 result.add(currentList);
             }
             T item = this.get(i);
-            currentList.add(item);            
+            currentList.add(item);
         }
-        
+
         return result;
     }
 //</editor-fold>
@@ -1532,26 +1663,26 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<Iteration<T,T>> toIterations(){
-        ArrayListQ<Iteration<T,T>> result = new ArrayListQ<>(this.size());
-        for(int i = 0; i< this.size();i++){
+    public ListQ<Iteration<T, T>> toIterations() {
+        ArrayListQ<Iteration<T, T>> result = new ArrayListQ<>(this.size());
+        for (int i = 0; i < this.size(); i++) {
             result.add(new IterationImpl<>(this.get(i), i));
         }
         return result;
     }
-    
+
     @Override
-    public EphemeralListQ<T> range(int start, int count){
+    public EphemeralListQ<T> range(int start, int count) {
         return EphemeralListQImpl.wrap(new ArrayListQ<>(this.subList(start, start + count)));
     }
-    
+
     @Override
-    public ListQ<T> rangeSelf(int start, int count){
+    public ListQ<T> rangeSelf(int start, int count) {
         this.removeRange(start + count - 1, this.size());
         this.removeRange(0, start);
         return this;
     }
-    
+
     private static class SelfImplementation {
 
         static <A> void where(ArrayListQ<A> thisList, Predicate<A> selector) {

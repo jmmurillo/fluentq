@@ -23,7 +23,7 @@ public class AggregateTests {
     
     @Test
     public void accumulateI_happypath() {
-        ListQ<Integer> list = ArrayListQ.newList(2,3,5,7,11,13);
+        ListQ<Integer> list = ArrayListQ.of(2,3,5,7,11,13);
         String result = list.accumulateI((x, y) -> x + "a["+y.getIndex()+"] = " + y.getValue() + ", ", "");
         Assert.assertEquals("a[0] = 2, a[1] = 3, a[2] = 5, a[3] = 7, a[4] = 11, a[5] = 13, ", result);
     }
