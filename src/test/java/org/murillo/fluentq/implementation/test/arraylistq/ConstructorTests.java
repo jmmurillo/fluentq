@@ -1,14 +1,10 @@
-package org.murillo.fluentq.test.arraylistq;
+package org.murillo.fluentq.implementation.test.arraylistq;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.Test;
-import org.murillo.fluentq.ArrayListQ;
+import org.murillo.fluentq.implementation.ArrayListQ;
 
 public class ConstructorTests {
     

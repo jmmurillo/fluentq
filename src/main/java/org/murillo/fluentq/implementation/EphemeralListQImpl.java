@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.murillo.fluentq;
+package org.murillo.fluentq.implementation;
 
+import org.murillo.fluentq.Iteration;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -25,22 +21,20 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntBiFunction;
 import java.util.function.ToLongFunction;
 import java.util.function.UnaryOperator;
+import org.murillo.fluentq.EphemeralListQ;
+import org.murillo.fluentq.ListQ;
 
-/**
- *
- * @author Usuario
- */
-public class EphemeralArrayListQ<T> implements EphemeralListQ<T> {
+public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
 
     protected ListQ<T> innerList;
     
-    public static <S> EphemeralArrayListQ<S> wrap(ListQ<S> innerList){
-        EphemeralArrayListQ<S> result = new EphemeralArrayListQ<>();
+    public static <S> EphemeralListQImpl<S> wrap(ListQ<S> innerList){
+        EphemeralListQImpl<S> result = new EphemeralListQImpl<>();
         result.innerList = innerList;
         return result;
     }
             
-    private EphemeralArrayListQ(){}            
+    private EphemeralListQImpl(){}            
     
     @Override
     public ListQ<T> hold() {
@@ -457,71 +451,74 @@ public class EphemeralArrayListQ<T> implements EphemeralListQ<T> {
         return this;
     }
 
+    
+    
+//<editor-fold defaultstate="collapsed" desc="List delegates">
     @Override
     public int size() {
         return innerList.size();
     }
-
+    
     @Override
     public boolean isEmpty() {
         return innerList.isEmpty();
     }
-
+    
     @Override
     public boolean contains(Object o) {
         return innerList.contains(o);
     }
-
+    
     @Override
     public int indexOf(Object o) {
         return innerList.indexOf(o);
     }
-
+    
     @Override
     public int lastIndexOf(Object o) {
         return innerList.lastIndexOf(o);
     }
-
+    
     @Override
     public Object[] toArray() {
         return innerList.toArray();
     }
-
+    
     @Override
     public <T> T[] toArray(T[] a) {
         return innerList.toArray(a);
     }
-
+    
     @Override
     public T get(int index) {
         return innerList.get(index);
     }
-
+    
     @Override
     public T set(int index, T element) {
         return innerList.set(index, element);
     }
-
+    
     @Override
     public boolean add(T e) {
         return innerList.add(e);
     }
-
+    
     @Override
     public void add(int index, T element) {
         innerList.add(index, element);
     }
-
+    
     @Override
     public T remove(int index) {
         return innerList.remove(index);
     }
-
+    
     @Override
     public boolean remove(Object o) {
         return innerList.remove(o);
     }
-
+    
     @Override
     public void clear() {
         innerList.clear();
@@ -531,70 +528,72 @@ public class EphemeralArrayListQ<T> implements EphemeralListQ<T> {
     public boolean containsAll(Collection<?> c) {
         return innerList.containsAll(c);
     }
-
+    
     @Override
     public boolean addAll(Collection<? extends T> c) {
         return innerList.addAll(c);
     }
-
+    
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
         return innerList.addAll(index, c);
     }
-
+    
     @Override
     public boolean removeAll(Collection<?> c) {
         return innerList.removeAll(c);
     }
-
+    
     @Override
     public boolean retainAll(Collection<?> c) {
         return innerList.retainAll(c);
     }
-
+    
     @Override
     public ListIterator<T> listIterator(int index) {
         return innerList.listIterator(index);
     }
-
+    
     @Override
     public ListIterator<T> listIterator() {
         return innerList.listIterator();
     }
-
+    
     @Override
     public Iterator<T> iterator() {
         return innerList.iterator();
     }
-
+    
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return innerList.subList(fromIndex, toIndex);
     }
-
+    
     @Override
     public void forEach(Consumer<? super T> action) {
         innerList.forEach(action);
     }
-
+    
     @Override
     public Spliterator<T> spliterator() {
         return innerList.spliterator();
     }
-
+    
     @Override
     public boolean removeIf(Predicate<? super T> filter) {
         return innerList.removeIf(filter);
     }
-
+    
     @Override
     public void replaceAll(UnaryOperator<T> operator) {
         innerList.replaceAll(operator);
     }
-
+    
     @Override
     public void sort(Comparator<? super T> c) {
         innerList.sort(c);
-    }    
+    }
+//</editor-fold>
+  
 
 }

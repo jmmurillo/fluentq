@@ -1,11 +1,11 @@
-package org.murillo.fluentq.test.arraylistq;
+package org.murillo.fluentq.implementation.test.arraylistq;
 
 import java.util.OptionalDouble;
 import java.util.OptionalLong;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.murillo.fluentq.ArrayListQ;
+import org.murillo.fluentq.implementation.ArrayListQ;
 import org.murillo.fluentq.ListQ;
 
 public class NumericalTests {

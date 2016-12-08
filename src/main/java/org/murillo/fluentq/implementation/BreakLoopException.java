@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.murillo.fluentq;
+package org.murillo.fluentq.implementation;
 
+import org.murillo.fluentq.Iteration;
 import java.util.Optional;
+import org.murillo.fluentq.Iteration;
 
 final class BreakLoopException extends RuntimeException{
 
     private Iteration<?,?> lastIteration;
     private Optional<?> returned = null;
-    private boolean initialized = false;
     
     public BreakLoopException() {
         super(null, null, false, false);
@@ -21,7 +22,6 @@ final class BreakLoopException extends RuntimeException{
         this();
         this.returned = returned;
         this.lastIteration = lastIteration;
-        this.initialized = true;
     }
 
     public Optional<?> getReturned() {

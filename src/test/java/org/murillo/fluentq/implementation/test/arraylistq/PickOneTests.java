@@ -1,11 +1,11 @@
-package org.murillo.fluentq.test.arraylistq;
+package org.murillo.fluentq.implementation.test.arraylistq;
 
 import java.util.Optional;
 import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.murillo.fluentq.ArrayListQ;
+import org.murillo.fluentq.implementation.ArrayListQ;
 import org.murillo.fluentq.ListQ;
 
 public class PickOneTests {
