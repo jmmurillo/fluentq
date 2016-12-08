@@ -13,9 +13,14 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntBiFunction;
 import java.util.function.ToLongFunction;
 
 interface CommonListQ<T> extends List<T>, java.io.Serializable {
+
+    boolean isDurable();
+
+    boolean isEphemeral();
 
     <S> S accumulate(BiFunction<S, T, S> function, S initial);
 
@@ -35,10 +40,10 @@ interface CommonListQ<T> extends List<T>, java.io.Serializable {
 
     ListQ<ListQ<T>> clusterEvery(int numberOfItems);
 
-	int count();
+    int count();
 
     int count(Predicate<T> selector);
-	
+
     Optional<T> first();
 
     Optional<T> first(Predicate<T> test);
@@ -52,8 +57,8 @@ interface CommonListQ<T> extends List<T>, java.io.Serializable {
     <K> HashMap<K, ListQ<T>> groupBy(Function<T, K> keySelector);
 
     <K> HashMap<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector);
-	
-	Optional<T> last() throws IndexOutOfBoundsException;
+
+    Optional<T> last() throws IndexOutOfBoundsException;
 
     Optional<T> last(Predicate<T> test);
 
@@ -72,24 +77,24 @@ interface CommonListQ<T> extends List<T>, java.io.Serializable {
     OptionalLong minAsLong();
 
     OptionalLong minAsLong(ToLongFunction<T> toNumber);
-	
-	Optional<T> randomElement();
+
+    Optional<T> randomElement();
 
     Optional<T> randomElement(Random random);
-	
-	<S> ListQ<S> select(Function<T, S> selector);
+
+    <S> ListQ<S> select(Function<T, S> selector);
 
     <S> ListQ<S> selectI(Function<Iteration<T, S>, S> selector);
 
     <S> ListQ<S> selectMany(Function<T, Collection<S>> selector);
 
     <S> ListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector);
-	
-	Optional<T> single();
+
+    Optional<T> single();
 
     Optional<T> single(Predicate<T> test);
-	
-	double sumAsDouble();
+
+    double sumAsDouble();
 
     double sumAsDouble(ToDoubleFunction<T> toNumber);
 
@@ -112,4 +117,60 @@ interface CommonListQ<T> extends List<T>, java.io.Serializable {
     String toString(String separator, Function<T, String> toString);
 
     T[] toTypedArray(Class<T> clazz);
+
+    EphemeralListQ<T> concat(Collection<T> collection);
+
+    EphemeralListQ<T> concat(T... items);
+
+    EphemeralListQ<T> distinct();
+
+    EphemeralListQ<T> distinct(BiPredicate<T, T> equalTest);
+
+    EphemeralListQ<T> insert(int index, Collection<T> collection);
+
+    EphemeralListQ<T> insert(int index, T... items);
+
+    EphemeralListQ<T> intersect(Collection<T> collection);
+
+    EphemeralListQ<T> intersect(Collection<T> collection, BiPredicate<T, T> equalTest);
+
+    EphemeralListQ<T> order();
+
+    EphemeralListQ<T> order(ToIntBiFunction<T, T> compareTo);
+
+    EphemeralListQ<T> orderBy(Function<T, Comparable>... selectors);
+
+    EphemeralListQ<T> orderByDesc(Function<T, Comparable>... selectors);
+
+    EphemeralListQ<T> orderDesc();
+
+    EphemeralListQ<T> orderDesc(ToIntBiFunction<T, T> compareTo);
+
+    EphemeralListQ<T> range(int start, int count);
+
+    EphemeralListQ<T> reverse();
+
+    EphemeralListQ<T> shuffle();
+
+    EphemeralListQ<T> shuffle(Random random);
+
+    EphemeralListQ<T> skip(int howMany);
+
+    EphemeralListQ<T> skipWhile(Predicate<T> condition);
+
+    EphemeralListQ<T> skipWhileI(Predicate<Iteration<T, Boolean>> condition);
+
+    EphemeralListQ<T> take(int howMany);
+
+    EphemeralListQ<T> takeWhile(Predicate<T> condition);
+
+    EphemeralListQ<T> takeWhileI(Predicate<Iteration<T, Boolean>> condition);
+
+    EphemeralListQ<T> union(Collection<T> collection);
+
+    EphemeralListQ<T> union(Collection<T> collection, BiPredicate<T, T> equalTest);
+
+    EphemeralListQ<T> where(Predicate<T> selector);
+
+    EphemeralListQ<T> whereI(Predicate<Iteration<T, Boolean>> selector);
 }

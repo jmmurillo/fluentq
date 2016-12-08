@@ -66,13 +66,13 @@ public class EphemeralArrayListQ<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public EphemeralListQ<T> whereSelf(Predicate<T> selector) {
+    public EphemeralListQ<T> where(Predicate<T> selector) {
         innerList.whereSelf(selector);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> whereISelf(Predicate<Iteration<T, Boolean>> selector) {
+    public EphemeralListQ<T> whereI(Predicate<Iteration<T, Boolean>> selector) {
         innerList.whereISelf(selector);
         return this;
     }
@@ -143,37 +143,37 @@ public class EphemeralArrayListQ<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public EphemeralListQ<T> distinctSelf() {
+    public EphemeralListQ<T> distinct() {
         innerList.distinctSelf();
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> distinctSelf(BiPredicate<T, T> equalTest) {
+    public EphemeralListQ<T> distinct(BiPredicate<T, T> equalTest) {
         innerList.distinctSelf(equalTest);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> unionSelf(Collection<T> collection) {
+    public EphemeralListQ<T> union(Collection<T> collection) {
         innerList.unionSelf(collection);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> unionSelf(Collection<T> collection, BiPredicate<T, T> equalTest) {
+    public EphemeralListQ<T> union(Collection<T> collection, BiPredicate<T, T> equalTest) {
         innerList.unionSelf(collection, equalTest);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> intersectSelf(Collection<T> collection) {
+    public EphemeralListQ<T> intersect(Collection<T> collection) {
         innerList.intersectSelf(collection);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> intersectSelf(Collection<T> collection, BiPredicate<T, T> equalTest) {
+    public EphemeralListQ<T> intersect(Collection<T> collection, BiPredicate<T, T> equalTest) {
         innerList.intersectSelf(collection, equalTest);
         return this;
     }
@@ -189,25 +189,25 @@ public class EphemeralArrayListQ<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public EphemeralListQ<T> concatSelf(Collection<T> collection) {
+    public EphemeralListQ<T> concat(Collection<T> collection) {
         innerList.concatSelf(collection);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> concatSelf(T... items) {
+    public EphemeralListQ<T> concat(T... items) {
         innerList.concatSelf(items);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> insertSelf(int index, Collection<T> collection) {
+    public EphemeralListQ<T> insert(int index, Collection<T> collection) {
         innerList.insertSelf(index, collection);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> insertSelf(int index, T... items) {
+    public EphemeralListQ<T> insert(int index, T... items) {
         innerList.insertSelf(index, items);
         return this;
     }
@@ -343,91 +343,91 @@ public class EphemeralArrayListQ<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public EphemeralListQ<T> reverseSelf() {
-        innerList.reverseSelf();
+    public EphemeralListQ<T> reverse() {
+        innerList.reverse();
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> shuffleSelf() {
-        innerList.shuffleSelf();
+    public EphemeralListQ<T> shuffle() {
+        innerList.shuffle();
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> shuffleSelf(Random random) {
+    public EphemeralListQ<T> shuffle(Random random) {
         innerList.shuffleSelf(random);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> orderSelf() {
+    public EphemeralListQ<T> order() {
         innerList.orderSelf();
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> orderDescSelf() {
+    public EphemeralListQ<T> orderDesc() {
         innerList.orderDescSelf();
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> orderSelf(ToIntBiFunction<T, T> compareTo) {
+    public EphemeralListQ<T> order(ToIntBiFunction<T, T> compareTo) {
         innerList.orderSelf(compareTo);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> orderDescSelf(ToIntBiFunction<T, T> compareTo) {
+    public EphemeralListQ<T> orderDesc(ToIntBiFunction<T, T> compareTo) {
         innerList.orderDescSelf(compareTo);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> orderBySelf(Function<T, Comparable>... selectors) {
+    public EphemeralListQ<T> orderBy(Function<T, Comparable>... selectors) {
         innerList.orderBySelf(selectors);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> orderByDescSelf(Function<T, Comparable>... selectors) {
+    public EphemeralListQ<T> orderByDesc(Function<T, Comparable>... selectors) {
         innerList.orderByDescSelf(selectors);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> takeSelf(int howMany) {
+    public EphemeralListQ<T> take(int howMany) {
         innerList.takeSelf(howMany);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> takeWhileSelf(Predicate<T> condition) {
+    public EphemeralListQ<T> takeWhile(Predicate<T> condition) {
         innerList.takeWhileSelf(condition);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> takeWhileISelf(Predicate<Iteration<T, Boolean>> condition) {
+    public EphemeralListQ<T> takeWhileI(Predicate<Iteration<T, Boolean>> condition) {
         innerList.takeWhileISelf(condition);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> skipSelf(int howMany) {
+    public EphemeralListQ<T> skip(int howMany) {
         innerList.skipSelf(howMany);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> skipWhileSelf(Predicate<T> condition) {
+    public EphemeralListQ<T> skipWhile(Predicate<T> condition) {
         innerList.skipWhileSelf(condition);
         return this;
     }
 
     @Override
-    public EphemeralListQ<T> skipWhileISelf(Predicate<Iteration<T, Boolean>> condition) {
+    public EphemeralListQ<T> skipWhileI(Predicate<Iteration<T, Boolean>> condition) {
         innerList.skipWhileISelf(condition);
         return this;
     }
@@ -453,7 +453,7 @@ public class EphemeralArrayListQ<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public EphemeralListQ<T> rangeSelf(int start, int count) {
+    public EphemeralListQ<T> range(int start, int count) {
         innerList.rangeSelf(start, count);
         return this;
     }
