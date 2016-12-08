@@ -427,8 +427,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="where">
     @Override
-    public ListQ<T> where(Predicate<T> selector) {
-        return this._where(selector, false);
+    public EphemeralListQ<T> where(Predicate<T> selector) {
+        return EphemeralArrayListQ.wrap(this._where(selector, false));
     }
 
     @Override
@@ -437,8 +437,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> whereI(Predicate<Iteration<T, Boolean>> selector) {
-        return this._whereI(selector, false);
+    public EphemeralListQ<T> whereI(Predicate<Iteration<T, Boolean>> selector) {
+        return EphemeralArrayListQ.wrap(this._whereI(selector, false));
     }
 
     @Override
@@ -610,13 +610,13 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="distinct">
     @Override
-    public ListQ<T> distinct() {
-        return _distinct(ArrayListQ::equalsWithNulls, false);
+    public EphemeralListQ<T> distinct() {
+        return EphemeralArrayListQ.wrap(_distinct(ArrayListQ::equalsWithNulls, false));
     }
 
     @Override
-    public ListQ<T> distinct(BiPredicate<T, T> equalTest) {
-        return _distinct(equalTest, false);
+    public EphemeralListQ<T> distinct(BiPredicate<T, T> equalTest) {
+        return EphemeralArrayListQ.wrap(_distinct(equalTest, false));
     }
 
     @Override
@@ -642,13 +642,13 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="union">
     @Override
-    public ListQ<T> union(Collection<T> collection) {
-        return _union(ArrayListQ::equalsWithNulls, collection, false);
+    public EphemeralListQ<T> union(Collection<T> collection) {
+        return EphemeralArrayListQ.wrap(_union(ArrayListQ::equalsWithNulls, collection, false));
     }
 
     @Override
-    public ListQ<T> union(Collection<T> collection, BiPredicate<T, T> equalTest) {
-        return _union(equalTest, collection, false);
+    public EphemeralListQ<T> union(Collection<T> collection, BiPredicate<T, T> equalTest) {
+        return EphemeralArrayListQ.wrap(_union(equalTest, collection, false));
     }
 
     @Override
@@ -673,13 +673,13 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="intersect">
     @Override
-    public ListQ<T> intersect(Collection<T> collection) {
-        return _intersection(ArrayListQ::equalsWithNulls, collection, false);
+    public EphemeralListQ<T> intersect(Collection<T> collection) {
+        return EphemeralArrayListQ.wrap(_intersection(ArrayListQ::equalsWithNulls, collection, false));
     }
 
     @Override
-    public ListQ<T> intersect(Collection<T> collection, BiPredicate<T, T> equalTest) {
-        return _intersection(equalTest, collection, false);
+    public EphemeralListQ<T> intersect(Collection<T> collection, BiPredicate<T, T> equalTest) {
+        return EphemeralArrayListQ.wrap(_intersection(equalTest, collection, false));
     }
 
     @Override
@@ -725,8 +725,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="concat insert">
     @Override
-    public ListQ<T> concat(Collection<T> collection) {
-        return this._insert(this.size(), collection, false);
+    public EphemeralListQ<T> concat(Collection<T> collection) {
+        return EphemeralArrayListQ.wrap(this._insert(this.size(), collection, false));
     }
 
     @Override
@@ -735,8 +735,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> concat(T... items) {
-        return this._insert(this.size(), Arrays.asList(items), false);
+    public EphemeralListQ<T> concat(T... items) {
+        return EphemeralArrayListQ.wrap(this._insert(this.size(), Arrays.asList(items), false));
     }
 
     @Override
@@ -745,8 +745,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> insert(int index, Collection<T> collection) {
-        return this._insert(index, collection, false);
+    public EphemeralListQ<T> insert(int index, Collection<T> collection) {
+        return EphemeralArrayListQ.wrap(this._insert(index, collection, false));
     }
 
     @Override
@@ -755,8 +755,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> insert(int index, T... items) {
-        return this._insert(index, Arrays.asList(items), false);
+    public EphemeralListQ<T> insert(int index, T... items) {
+        return EphemeralArrayListQ.wrap(this._insert(index, Arrays.asList(items), false));
     }
 
     @Override
@@ -1160,8 +1160,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="reverse">
     @Override
-    public ListQ<T> reverse() {
-        return this._reverse(false);
+    public EphemeralListQ<T> reverse() {
+        return EphemeralArrayListQ.wrap(this._reverse(false));
     }
 
     @Override
@@ -1178,8 +1178,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="shuffle">
     @Override
-    public ListQ<T> shuffle() {
-        return this._shuffle(this.randomGenerator, false);
+    public EphemeralListQ<T> shuffle() {
+        return EphemeralArrayListQ.wrap(this._shuffle(this.randomGenerator, false));
     }
 
     @Override
@@ -1188,8 +1188,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> shuffle(Random random) {
-        return this._shuffle(random, false);
+    public EphemeralListQ<T> shuffle(Random random) {
+        return EphemeralArrayListQ.wrap(this._shuffle(random, false));
     }
 
     @Override
@@ -1206,8 +1206,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="order">
     @Override
-    public ListQ<T> order() {
-        return this._order(false, false, ArrayListQ::compareWithNullsWithCast);
+    public EphemeralListQ<T> order() {
+        return EphemeralArrayListQ.wrap(this._order(false, false, ArrayListQ::compareWithNullsWithCast));
     }
 
     @Override
@@ -1216,8 +1216,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> orderDesc() {
-        return this._order(false, true, ArrayListQ::compareWithNullsWithCast);
+    public EphemeralListQ<T> orderDesc() {
+        return EphemeralArrayListQ.wrap(this._order(false, true, ArrayListQ::compareWithNullsWithCast));
     }
 
     @Override
@@ -1226,8 +1226,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> order(ToIntBiFunction<T, T> compareTo) {
-        return this._order(false, false, compareTo);
+    public EphemeralListQ<T> order(ToIntBiFunction<T, T> compareTo) {
+        return EphemeralArrayListQ.wrap(this._order(false, false, compareTo));
     }
 
     @Override
@@ -1236,8 +1236,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> orderDesc(ToIntBiFunction<T, T> compareTo) {
-        return this._order(false, true, compareTo);
+    public EphemeralListQ<T> orderDesc(ToIntBiFunction<T, T> compareTo) {
+        return EphemeralArrayListQ.wrap(this._order(false, true, compareTo));
     }
 
     @Override
@@ -1246,8 +1246,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> orderBy(Function<T, Comparable>... selectors) {
-        return this._order(false, false, (a, b) -> compareWithNullsWithSelectors(a, b, selectors));
+    public EphemeralListQ<T> orderBy(Function<T, Comparable>... selectors) {
+        return EphemeralArrayListQ.wrap(this._order(false, false, (a, b) -> compareWithNullsWithSelectors(a, b, selectors)));
     }
 
     @Override
@@ -1256,8 +1256,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> orderByDesc(Function<T, Comparable>... selectors) {
-        return this._order(false, true, (a, b) -> compareWithNullsWithSelectors(a, b, selectors));
+    public EphemeralListQ<T> orderByDesc(Function<T, Comparable>... selectors) {
+        return EphemeralArrayListQ.wrap(this._order(false, true, (a, b) -> compareWithNullsWithSelectors(a, b, selectors)));
     }
 
     @Override
@@ -1291,14 +1291,14 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="take">
     @Override
-    public ListQ<T> take(int howMany) {
+    public EphemeralListQ<T> take(int howMany) {
         ListQ<T> result;
         if (howMany < this.size()) {
             result = new ArrayListQ<>(this.subList(0, howMany));
         } else {
             result = new ArrayListQ<>(this);
         }
-        return result;
+        return EphemeralArrayListQ.wrap(result);
     }
 
     @Override
@@ -1312,7 +1312,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> takeWhile(Predicate<T> condition) {
+    public EphemeralListQ<T> takeWhile(Predicate<T> condition) {
         int toIndex = 0;
         for (; toIndex < this.size(); toIndex++) {
             T item = this.get(toIndex);
@@ -1326,7 +1326,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         } else {
             result = new ArrayListQ<>(this.subList(0, toIndex));
         }
-        return result;
+        return EphemeralArrayListQ.wrap(result);
     }
 
     @Override
@@ -1343,7 +1343,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> takeWhileI(Predicate<Iteration<T, Boolean>> condition) {
+    public EphemeralListQ<T> takeWhileI(Predicate<Iteration<T, Boolean>> condition) {
         int toIndex = 0;
         try {
             for (; toIndex < this.size(); toIndex++) {
@@ -1364,7 +1364,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         } else {
             result = new ArrayListQ<>(this.subList(0, toIndex));
         }
-        return result;
+        return EphemeralArrayListQ.wrap(result);
     }
 
     @Override
@@ -1389,14 +1389,14 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="skip">
     @Override
-    public ListQ<T> skip(int howMany) {
+    public EphemeralListQ<T> skip(int howMany) {
         ListQ<T> result;
         if (howMany < this.size()) {
             result = new ArrayListQ<>(this.subList(howMany, this.size()));
         } else {
             result = new ArrayListQ<>();
         }
-        return result;
+        return EphemeralArrayListQ.wrap(result);
     }
 
     @Override
@@ -1410,7 +1410,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> skipWhile(Predicate<T> condition) {
+    public EphemeralListQ<T> skipWhile(Predicate<T> condition) {
         int fromIndex = 0;
         for (; fromIndex < this.size(); fromIndex++) {
             T item = this.get(fromIndex);
@@ -1424,7 +1424,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         } else {
             result = new ArrayListQ<>(this.subList(fromIndex, this.size()));
         }
-        return result;
+        return EphemeralArrayListQ.wrap(result);
     }
 
     @Override
@@ -1447,7 +1447,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<T> skipWhileI(Predicate<Iteration<T, Boolean>> condition) {
+    public EphemeralListQ<T> skipWhileI(Predicate<Iteration<T, Boolean>> condition) {
         int fromIndex = 0;
         try {
             for (; fromIndex < this.size(); fromIndex++) {
@@ -1467,7 +1467,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         } else {
             result = new ArrayListQ<>(this.subList(fromIndex, this.size()));
         }
-        return result;
+        return EphemeralArrayListQ.wrap(result);
     }
 
     @Override
@@ -1531,8 +1531,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
     
     @Override
-    public ListQ<T> range(int start, int count){
-        return new ArrayListQ<>(this.subList(start, start + count));
+    public EphemeralListQ<T> range(int start, int count){
+        return EphemeralArrayListQ.wrap(new ArrayListQ<>(this.subList(start, start + count)));
     }
     
     @Override
