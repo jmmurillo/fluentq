@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalLong;
 import java.util.Random;
 import java.util.Spliterator;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -38,8 +40,11 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     
     @Override
     public ListQ<T> hold() {
+        if(this.innerList instanceof MoanerListQ){
+            throw MoanerListQ.moan();
+        }
         ListQ<T> result = this.innerList;
-        this.innerList = null;
+        this.innerList = MoanerListQ.getInstance();
         return result;
     }
     
@@ -296,18 +301,18 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public <K, V> HashMap<K, V> toMap(BiFunction<T, Integer, K> keySelector, BiFunction<T, Integer, V> valueSelector) {
-        return innerList.toMap(keySelector, valueSelector);
+    public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector) {
+        return innerList.toMapI(keySelector, valueSelector);
     }
 
     @Override
-    public <K, V> HashMap<K, V> toMap(BiFunction<T, Integer, K> keySelector, Function<T, V> valueSelector) {
-        return innerList.toMap(keySelector, valueSelector);
+    public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMap<K, V>> conflictResolver) {
+        return innerList.toMap(keySelector, valueSelector, conflictResolver);
     }
 
     @Override
-    public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, BiFunction<T, Integer, V> valueSelector) {
-        return innerList.toMap(keySelector, valueSelector);
+    public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMap<K, V>> conflictResolver) {
+        return innerList.toMapI(keySelector, valueSelector, conflictResolver);
     }
 
     @Override
@@ -449,9 +454,7 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     public EphemeralListQ<T> range(int start, int count) {
         innerList.rangeSelf(start, count);
         return this;
-    }
-
-    
+    }    
     
 //<editor-fold defaultstate="collapsed" desc="List delegates">
     @Override
@@ -593,7 +596,9 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     public void sort(Comparator<? super T> c) {
         innerList.sort(c);
     }
-//</editor-fold>
-  
-
+//</editor-fold>  
+    
 }
+
+
+

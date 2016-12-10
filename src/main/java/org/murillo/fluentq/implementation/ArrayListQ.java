@@ -1,8 +1,8 @@
 package org.murillo.fluentq.implementation;
 
 import org.murillo.fluentq.Iteration;
-import org.murillo.fluentq.implementation.EphemeralListQImpl;
 import java.lang.reflect.Array;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,11 +10,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalLong;
 import java.util.Random;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -82,7 +84,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         ArrayListQ<S> result = new ArrayListQ<>(array);
         return result;
     }
-    
+
     public static ArrayListQ<Byte> of(byte... array) {
         ArrayListQ<Byte> result = new ArrayListQ<>(array.length);
         for (byte i : array) {
@@ -1200,44 +1202,103 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         }
         return result;
     }
-
+    
     @Override
-    public <K, V> HashMap<K, V> toMap(BiFunction<T, Integer, K> keySelector, BiFunction<T, Integer, V> valueSelector) {
+    public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector,
+        BiConsumer<Map.Entry<K,V>, HashMap<K, V>> conflictResolver){
         HashMap<K, V> result = new HashMap<>();
-        for (int i = 0; i < this.size(); i++) {
-            T item = this.get(i);
-            K key = keySelector.apply(item, i);
-            V value = valueSelector.apply(item, i);
-            result.put(key, value);
-        }
-        return result;
-    }
-
-    @Override
-    public <K, V> HashMap<K, V> toMap(BiFunction<T, Integer, K> keySelector, Function<T, V> valueSelector) {
-        HashMap<K, V> result = new HashMap<>();
-        for (int i = 0; i < this.size(); i++) {
-            T item = this.get(i);
-            K key = keySelector.apply(item, i);
-            V value = valueSelector.apply(item);
-            result.put(key, value);
-        }
-        return result;
-    }
-
-    @Override
-    public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, BiFunction<T, Integer, V> valueSelector) {
-        HashMap<K, V> result = new HashMap<>();
-        for (int i = 0; i < this.size(); i++) {
-            T item = this.get(i);
+        for (T item : this) {
             K key = keySelector.apply(item);
-            V value = valueSelector.apply(item, i);
-            result.put(key, value);
+            V value = valueSelector.apply(item);
+            if(!result.containsKey(key)){
+                result.put(key, value);
+            }else{
+                conflictResolver.accept(new AbstractMap.SimpleEntry<>(key, value), result);
+            }
         }
         return result;
     }
-//</editor-fold>
 
+    @Override
+    public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector) {
+        HashMap<K, V> result = new HashMap<>();
+        boolean breakNext = false;
+        for (int i = 0; i < this.size(); i++) {
+            T item = this.get(i);
+            K key;
+            try {
+                key = keySelector.apply(new IterationImpl<>(item, i));
+            } catch (BreakLoopException ex) {
+                if (ex.isInitialized()) {
+                    key = (K) ex.getReturned().get();
+                    breakNext = true;
+                } else {
+                    break;
+                }
+            }
+            V value;
+            try {
+                value = valueSelector.apply(new IterationImpl<>(item, i));
+            } catch (BreakLoopException ex) {
+                if (ex.isInitialized()) {
+                    value = (V) ex.getReturned().get();
+                    breakNext = true;
+                } else {
+                    break;
+                }
+            }
+            result.put(key, value);
+            if (breakNext) {
+                break;
+            }
+        }
+
+        return result;
+    }
+    
+        @Override
+    public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector,
+            BiConsumer<Map.Entry<K,V>, HashMap<K, V>> conflictResolver){
+        HashMap<K, V> result = new HashMap<>();
+        boolean breakNext = false;
+        for (int i = 0; i < this.size(); i++) {
+            T item = this.get(i);
+            K key;
+            try {
+                key = keySelector.apply(new IterationImpl<>(item, i));
+            } catch (BreakLoopException ex) {
+                if (ex.isInitialized()) {
+                    key = (K) ex.getReturned().get();
+                    breakNext = true;
+                } else {
+                    break;
+                }
+            }
+            V value;
+            try {
+                value = valueSelector.apply(new IterationImpl<>(item, i));
+            } catch (BreakLoopException ex) {
+                if (ex.isInitialized()) {
+                    value = (V) ex.getReturned().get();
+                    breakNext = true;
+                } else {
+                    break;
+                }
+            }
+            if(!result.containsKey(key)){
+                result.put(key, value);
+            }else{
+                conflictResolver.accept(new AbstractMap.SimpleEntry<>(key, value), result);
+            }
+            if (breakNext) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
+//</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="selectMany">
     @Override
     public <S> ListQ<S> selectMany(Function<T, Collection<S>> selector) {

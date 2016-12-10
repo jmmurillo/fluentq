@@ -3,10 +3,12 @@ package org.murillo.fluentq;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalLong;
 import java.util.Random;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -106,11 +108,13 @@ interface CommonListQ<T> extends List<T>, java.io.Serializable {
 
     <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector);
 
-    <K, V> HashMap<K, V> toMap(BiFunction<T, Integer, K> keySelector, BiFunction<T, Integer, V> valueSelector);
+    <K, V> HashMap<K, V> toMapI(Function<Iteration<T,K>, K> keySelector, Function<Iteration<T,V>, V> valueSelector);
+    
+    <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector,
+            BiConsumer<Map.Entry<K,V>, HashMap<K, V>> conflictResolver);
 
-    <K, V> HashMap<K, V> toMap(BiFunction<T, Integer, K> keySelector, Function<T, V> valueSelector);
-
-    <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, BiFunction<T, Integer, V> valueSelector);
+    <K, V> HashMap<K, V> toMapI(Function<Iteration<T,K>, K> keySelector, Function<Iteration<T,V>, V> valueSelector,
+            BiConsumer<Map.Entry<K,V>, HashMap<K, V>> conflictResolver);
 
     String toString(String separator);
 
