@@ -5,6 +5,8 @@
  */
 package org.murillo.fluentq;
 
+import java.util.function.Function;
+
 public interface EphemeralListQ<T> extends CommonListQ<T>, java.io.Serializable {
 
     @Override
@@ -18,4 +20,5 @@ public interface EphemeralListQ<T> extends CommonListQ<T>, java.io.Serializable 
     }
 
     ListQ<T> hold();
+    
 }

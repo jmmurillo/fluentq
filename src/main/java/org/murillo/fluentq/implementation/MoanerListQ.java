@@ -678,7 +678,12 @@ class MoanerListQ<T> implements ListQ<T> {
     public List<T> subList(int fromIndex, int toIndex) {
         throw moan();
     }
-
+    
+    @Override
+    public <S> S flow(Function<ListQ<T>, S> func) {
+        throw moan();
+    }
+    
     public static RuntimeException moan() {
         throw new IllegalStateException("The ephemeral list cannot be used again because it has already been disposed.");
     }

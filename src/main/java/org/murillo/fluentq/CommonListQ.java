@@ -18,7 +18,7 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntBiFunction;
 import java.util.function.ToLongFunction;
 
-interface CommonListQ<T> extends List<T>, java.io.Serializable {
+public interface CommonListQ<T> extends List<T>, java.io.Serializable {
 
     boolean isDurable();
 
@@ -177,4 +177,6 @@ interface CommonListQ<T> extends List<T>, java.io.Serializable {
     EphemeralListQ<T> where(Predicate<T> selector);
 
     EphemeralListQ<T> whereI(Predicate<Iteration<T, Boolean>> selector);
+    
+    <S> S flow(Function<ListQ<T>, S> func);
 }

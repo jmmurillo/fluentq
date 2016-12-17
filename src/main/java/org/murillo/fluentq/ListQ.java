@@ -79,5 +79,10 @@ public interface ListQ<T> extends CommonListQ<T>, java.io.Serializable {
     ListQ<T> whereISelf(Predicate<Iteration<T, Boolean>> selector);
 
     ListQ<T> whereSelf(Predicate<T> selector);
-
+    
+    @Override
+    default <S> S flow(Function<ListQ<T>, S> func) {
+        return func.apply(this);
+    }
+    
 }

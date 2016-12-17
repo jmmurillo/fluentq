@@ -454,7 +454,12 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     public EphemeralListQ<T> range(int start, int count) {
         innerList.rangeSelf(start, count);
         return this;
-    }    
+    }
+    
+    @Override
+    public <S> S flow(Function<ListQ<T>, S> func) {
+        return func.apply(this.innerList);
+    }
     
 //<editor-fold defaultstate="collapsed" desc="List delegates">
     @Override

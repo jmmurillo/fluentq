@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -1411,7 +1410,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     public EphemeralListQ<T> order() {
         return EphemeralListQImpl.wrap(this._order(false, false, ArrayListQ::compareWithNullsWithCast));
     }
-
+    
     @Override
     public ListQ<T> orderSelf() {
         return this._order(true, false, ArrayListQ::compareWithNullsWithCast);

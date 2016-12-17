@@ -19,7 +19,7 @@ public class ConstructorTests {
     public void constructor_primitiveStream_happypath() {
         int[] content = new int[]{1,2,3,4};
         ArrayListQ<Integer> list = new ArrayListQ<>(IntStream.of(content));
-        Assert.assertArrayEquals(content, ArrayListQ.toIntArray(list));
+        Assert.assertArrayEquals(content, list.flow(ArrayListQ::toIntArray));
     }
 
 }
