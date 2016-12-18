@@ -1,4 +1,4 @@
-package org.murillo.fluentq.implementation;
+package org.murillo.fluentq.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -686,6 +686,36 @@ class MoanerListQ<T> implements ListQ<T> {
     
     public static RuntimeException moan() {
         throw new IllegalStateException("The ephemeral list cannot be used again because it has already been disposed.");
+    }
+
+    @Override
+    public ListQ<T> concatOneSelf(T item) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ListQ<T> insertOneSelf(int index, T item) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public EphemeralListQ<T> concatOne(T item) {
+        throw moan(); 
+    }
+
+    @Override
+    public EphemeralListQ<T> insertOne(int index, T item) {
+        throw moan();
+    }
+
+    @Override
+    public ListQ<T> copy() {
+        throw moan();
+    }
+    
+    @Override
+    public ListQ<T> flowIdentity() {
+        throw moan();
     }
 
 }

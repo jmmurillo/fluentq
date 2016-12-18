@@ -1,4 +1,4 @@
-package org.murillo.fluentq.implementation;
+package org.murillo.fluentq.impl;
 
 import org.murillo.fluentq.Iteration;
 import java.util.Collection;
@@ -457,8 +457,20 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
     
     @Override
-    public <S> S flow(Function<ListQ<T>, S> func) {
-        return func.apply(this.innerList);
+    public EphemeralListQ<T> concatOne(T item) {
+        innerList.concatOneSelf(item);
+        return this;
+    }
+
+    @Override
+    public EphemeralListQ<T> insertOne(int index, T item) {
+        innerList.insertOneSelf(index, item);
+        return this;
+    }
+    
+    @Override
+    public ListQ<T> flowIdentity(){
+        return this.innerList;
     }
     
 //<editor-fold defaultstate="collapsed" desc="List delegates">

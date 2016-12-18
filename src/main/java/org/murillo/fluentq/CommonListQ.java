@@ -125,6 +125,8 @@ public interface CommonListQ<T> extends List<T>, java.io.Serializable {
     EphemeralListQ<T> concat(Collection<T> collection);
 
     EphemeralListQ<T> concat(T... items);
+    
+    EphemeralListQ<T> concatOne(T item);
 
     EphemeralListQ<T> distinct();
 
@@ -132,7 +134,9 @@ public interface CommonListQ<T> extends List<T>, java.io.Serializable {
 
     EphemeralListQ<T> insert(int index, Collection<T> collection);
 
-    EphemeralListQ<T> insert(int index, T... items);
+    EphemeralListQ<T> insert(int index, T... items);    
+        
+    EphemeralListQ<T> insertOne(int index, T item);
 
     EphemeralListQ<T> intersect(Collection<T> collection);
 
@@ -177,6 +181,5 @@ public interface CommonListQ<T> extends List<T>, java.io.Serializable {
     EphemeralListQ<T> where(Predicate<T> selector);
 
     EphemeralListQ<T> whereI(Predicate<Iteration<T, Boolean>> selector);
-    
-    <S> S flow(Function<ListQ<T>, S> func);
+
 }

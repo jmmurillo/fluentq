@@ -1,4 +1,4 @@
-package org.murillo.fluentq.implementation;
+package org.murillo.fluentq.impl;
 
 import org.murillo.fluentq.Iteration;
 import java.lang.reflect.Array;
@@ -221,6 +221,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="fromIterations">
     public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iteration<S, ?>... iterations) {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
@@ -257,176 +258,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return result;
     }
 //</editor-fold>  
-
-//<editor-fold defaultstate="collapsed" desc="to primitive arrays">
-    public static byte[] toByteArray(ListQ<? extends Number> list) {
-        byte[] result = new byte[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i).byteValue();
-        }
-        return result;
-    }
-
-    public static short[] toShortArray(ListQ<? extends Number> list) {
-        short[] result = new short[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i).shortValue();
-        }
-        return result;
-    }
-
-    public static int[] toIntArray(ListQ<? extends Number> list) {
-        int[] result = new int[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i).intValue();
-        }
-        return result;
-    }
-
-    public static long[] toLongArray(ListQ<? extends Number> list) {
-        long[] result = new long[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i).longValue();
-        }
-        return result;
-    }
-
-    public static float[] toFloatArray(ListQ<? extends Number> list) {
-        float[] result = new float[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i).floatValue();
-        }
-        return result;
-    }
-
-    public static double[] toDoubleArray(ListQ<? extends Number> list) {
-        double[] result = new double[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i).doubleValue();
-        }
-        return result;
-    }
-
-    public static boolean[] toBooleanArray(ListQ<Boolean> list) {
-        boolean[] result = new boolean[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i);
-        }
-        return result;
-    }
-
-    public static char[] toCharArray(ListQ<Character> list) {
-        char[] result = new char[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = list.get(i);
-        }
-        return result;
-    }
-
-    public static byte[] toByteArray(ListQ<? extends Number> list, byte nullValue) {
-        byte[] result = new byte[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            Number get = list.get(i);
-            if (get == null) {
-                result[i] = nullValue;
-            } else {
-                result[i] = list.get(i).byteValue();
-            }
-        }
-        return result;
-    }
-
-    public static short[] toShortArray(ListQ<? extends Number> list, short nullValue) {
-        short[] result = new short[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            Number get = list.get(i);
-            if (get == null) {
-                result[i] = nullValue;
-            } else {
-                result[i] = list.get(i).shortValue();
-            }
-        }
-        return result;
-    }
-
-    public static int[] toIntArray(ListQ<? extends Number> list, int nullValue) {
-        int[] result = new int[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            Number get = list.get(i);
-            if (get == null) {
-                result[i] = nullValue;
-            } else {
-                result[i] = list.get(i).intValue();
-            }
-        }
-        return result;
-    }
-
-    public static long[] toLongArray(ListQ<? extends Number> list, long nullValue) {
-        long[] result = new long[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            Number get = list.get(i);
-            if (get == null) {
-                result[i] = nullValue;
-            } else {
-                result[i] = list.get(i).longValue();
-            }
-        }
-        return result;
-    }
-
-    public static float[] toFloatArray(ListQ<? extends Number> list, float nullValue) {
-        float[] result = new float[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            Number get = list.get(i);
-            if (get == null) {
-                result[i] = nullValue;
-            } else {
-                result[i] = list.get(i).floatValue();
-            }
-        }
-        return result;
-    }
-
-    public static double[] toDoubleArray(ListQ<? extends Number> list, double nullValue) {
-        double[] result = new double[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            Number get = list.get(i);
-            if (get == null) {
-                result[i] = nullValue;
-            } else {
-                result[i] = list.get(i).doubleValue();
-            }
-        }
-        return result;
-    }
-
-    public static boolean[] toBooleanArray(ListQ<Boolean> list, boolean nullValue) {
-        boolean[] result = new boolean[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            Boolean get = list.get(i);
-            if (get == null) {
-                result[i] = nullValue;
-            } else {
-                result[i] = list.get(i);
-            }
-        }
-        return result;
-    }
-
-    public static char[] toCharArray(ListQ<Character> list, char nullValue) {
-        char[] result = new char[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            Character get = list.get(i);
-            if (get == null) {
-                result[i] = nullValue;
-            } else {
-                result[i] = list.get(i);
-            }
-        }
-        return result;
-    }
-//</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="generate">
     public static <A> ArrayListQ<A> generate(Function<Iteration<A, A>, A> generator) {
@@ -856,8 +687,30 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     @Override
     public ListQ<T> concatSelf(T... items) {
         return this._insert(this.size(), Arrays.asList(items), true);
+    }   
+
+    @Override
+    public EphemeralListQ<T> concatOne(T item) {
+        return EphemeralListQImpl.wrap(new ArrayListQ<>(this).concatOneSelf(item));
     }
 
+    @Override
+    public ListQ<T> concatOneSelf(T item) {
+        this.add(item);
+        return this;
+    }
+    
+    @Override
+    public EphemeralListQ<T> insertOne(int index, T item) {
+        return EphemeralListQImpl.wrap(new ArrayListQ<>(this).insertOneSelf(index, item));
+    }
+
+    @Override
+    public ListQ<T> insertOneSelf(int index, T item) {
+        this.add(index, item);
+        return this;
+    }
+    
     @Override
     public EphemeralListQ<T> insert(int index, Collection<T> collection) {
         return EphemeralListQImpl.wrap(this._insert(index, collection, false));
@@ -1743,6 +1596,11 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return this;
     }
 
+    @Override
+    public ListQ<T> copy(){
+        return new ArrayListQ<>(this);
+    }
+    
     private static class SelfImplementation {
 
         static <A> void where(ArrayListQ<A> thisList, Predicate<A> selector) {

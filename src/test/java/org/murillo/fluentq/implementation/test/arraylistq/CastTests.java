@@ -3,8 +3,9 @@ package org.murillo.fluentq.implementation.test.arraylistq;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.murillo.fluentq.implementation.ArrayListQ;
+import org.murillo.fluentq.impl.ArrayListQ;
 import org.murillo.fluentq.ListQ;
+import org.murillo.fluentq.impl.ListQFuncs;
 
 public class CastTests {
 
@@ -18,7 +19,9 @@ public class CastTests {
     @Test
     public void cast_happypath() {
         ListQ<Number> numbers = list.cast(Number.class);
-        Assert.assertArrayEquals(ArrayListQ.toIntArray(numbers, 0), ArrayListQ.toIntArray(list, 0));
+        int[] expected = numbers.flow(ListQFuncs::toIntArray, 0);
+        int[] actual = list.flow(ListQFuncs::toIntArray, 0);
+        Assert.assertArrayEquals(expected, actual);
         Assert.assertNotSame(numbers, list);
     }
 

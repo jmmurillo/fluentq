@@ -5,7 +5,7 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.murillo.fluentq.implementation.ArrayListQ;
+import org.murillo.fluentq.impl.ArrayListQ;
 import org.murillo.fluentq.ListQ;
 
 public class PickOneTests {

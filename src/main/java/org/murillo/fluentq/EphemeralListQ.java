@@ -7,7 +7,7 @@ package org.murillo.fluentq;
 
 import java.util.function.Function;
 
-public interface EphemeralListQ<T> extends CommonListQ<T>, java.io.Serializable {
+public interface EphemeralListQ<T> extends CommonListQ<T>, FluentQ<ListQ<T>>, java.io.Serializable {
 
     @Override
     default boolean isDurable() {

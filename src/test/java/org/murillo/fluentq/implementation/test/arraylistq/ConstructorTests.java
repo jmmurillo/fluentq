@@ -4,7 +4,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.Test;
-import org.murillo.fluentq.implementation.ArrayListQ;
+import org.murillo.fluentq.impl.ArrayListQ;
+import org.murillo.fluentq.impl.ListQFuncs;
 
 public class ConstructorTests {
     
@@ -19,7 +20,7 @@ public class ConstructorTests {
     public void constructor_primitiveStream_happypath() {
         int[] content = new int[]{1,2,3,4};
         ArrayListQ<Integer> list = new ArrayListQ<>(IntStream.of(content));
-        Assert.assertArrayEquals(content, list.flow(ArrayListQ::toIntArray));
+        Assert.assertArrayEquals(content, list.flow(ListQFuncs::toIntArray));
     }
 
 }

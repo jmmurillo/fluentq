@@ -7,12 +7,13 @@ package org.murillo.fluentq;
 
 import java.util.Collection;
 import java.util.Random;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntBiFunction;
 
-public interface ListQ<T> extends CommonListQ<T>, java.io.Serializable {
+public interface ListQ<T> extends CommonListQ<T>, FluentQ<ListQ<T>>, java.io.Serializable {
 
     @Override
     default boolean isDurable() {
@@ -28,6 +29,10 @@ public interface ListQ<T> extends CommonListQ<T>, java.io.Serializable {
 
     ListQ<T> concatSelf(T... items);
 
+    ListQ<T> concatOneSelf(T item);
+    
+    ListQ<T> copy();
+
     ListQ<T> distinctSelf();
 
     ListQ<T> distinctSelf(BiPredicate<T, T> equalTest);
@@ -35,6 +40,8 @@ public interface ListQ<T> extends CommonListQ<T>, java.io.Serializable {
     ListQ<T> insertSelf(int index, Collection<T> collection);
 
     ListQ<T> insertSelf(int index, T... items);
+
+    ListQ<T> insertOneSelf(int index, T item);
 
     ListQ<T> intersectSelf(Collection<T> collection);
 
@@ -79,10 +86,5 @@ public interface ListQ<T> extends CommonListQ<T>, java.io.Serializable {
     ListQ<T> whereISelf(Predicate<Iteration<T, Boolean>> selector);
 
     ListQ<T> whereSelf(Predicate<T> selector);
-    
-    @Override
-    default <S> S flow(Function<ListQ<T>, S> func) {
-        return func.apply(this);
-    }
     
 }
