@@ -4,7 +4,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.murillo.fluentq.utils.func.*;
 
-public interface FluentQ<A extends FluentQ> {
+public interface FluentQ<A> {
 
     default <R> R flow(Function<A, R> func) {
         return func.apply(this.flowIdentity());
