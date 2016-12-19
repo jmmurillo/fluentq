@@ -29,12 +29,12 @@ public class IterationImpl<T, R> implements Iteration<T, R> {
     }
 
     @Override
-    public Optional<R> breakLoop() throws BreakLoopException {
+    public R breakLoop() throws BreakLoopException {
         throw new BreakLoopException();
     }
 
     @Override
-    public Optional<R> breakLoop(Optional<R> returned) throws BreakLoopException {
+    public R breakLoop(R returned) throws BreakLoopException {
         throw new BreakLoopException(returned, this);
     }
 

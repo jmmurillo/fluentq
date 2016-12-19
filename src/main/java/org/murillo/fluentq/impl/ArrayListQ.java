@@ -1082,7 +1082,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 key = keySelector.apply(new IterationImpl<>(item, i));
             } catch (BreakLoopException ex) {
                 if (ex.isInitialized()) {
-                    key = (K) ex.getReturned().get();
+                    key = (K) ex.getReturned();
                     breakNext = true;
                 } else {
                     break;
@@ -1093,7 +1093,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 value = valueSelector.apply(new IterationImpl<>(item, i));
             } catch (BreakLoopException ex) {
                 if (ex.isInitialized()) {
-                    value = (V) ex.getReturned().get();
+                    value = (V) ex.getReturned();
                     breakNext = true;
                 } else {
                     break;
@@ -1120,7 +1120,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 key = keySelector.apply(new IterationImpl<>(item, i));
             } catch (BreakLoopException ex) {
                 if (ex.isInitialized()) {
-                    key = (K) ex.getReturned().get();
+                    key = (K) ex.getReturned();
                     breakNext = true;
                 } else {
                     break;
@@ -1131,7 +1131,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 value = valueSelector.apply(new IterationImpl<>(item, i));
             } catch (BreakLoopException ex) {
                 if (ex.isInitialized()) {
-                    value = (V) ex.getReturned().get();
+                    value = (V) ex.getReturned();
                     breakNext = true;
                 } else {
                     break;
@@ -1173,7 +1173,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             }
         } catch (BreakLoopException ex) {
             if (ex.isInitialized()) {
-                result.addAll((Collection<S>) ex.getReturned().get());
+                result.addAll((Collection<S>) ex.getReturned());
             }
         }
         return result;
@@ -1407,7 +1407,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         } catch (BreakLoopException ex) {
-            if (ex.isInitialized() && (Boolean) ex.getReturned().get()) {
+            if (ex.isInitialized() && (Boolean) ex.getReturned()) {
                 toIndex++;
             }
         }
@@ -1432,7 +1432,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         } catch (BreakLoopException ex) {
-            if (ex.isInitialized() && (Boolean) ex.getReturned().get()) {
+            if (ex.isInitialized() && (Boolean) ex.getReturned()) {
                 fromIndex++;
             }
         }
@@ -1511,7 +1511,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         } catch (BreakLoopException ex) {
-            if (ex.isInitialized() && (Boolean) ex.getReturned().get()) {
+            if (ex.isInitialized() && (Boolean) ex.getReturned()) {
                 fromIndex++;
             }
         }
@@ -1535,7 +1535,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 }
             }
         } catch (BreakLoopException ex) {
-            if (ex.isInitialized() && (Boolean) ex.getReturned().get()) {
+            if (ex.isInitialized() && (Boolean) ex.getReturned()) {
                 toIndex++;
             }
         }
@@ -1657,7 +1657,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                     thisList.remove(i);
                 }
             } catch (BreakLoopException ex) {
-                boolean matches = ex.isInitialized() && (Boolean) ex.getReturned().get();
+                boolean matches = ex.isInitialized() && (Boolean) ex.getReturned();
                 if (inDeletionRange) {
                     thisList.removeRange(rangeStart, thisList.size());
                 } else {
@@ -1719,7 +1719,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                     }
                 }
             } catch (BreakLoopException ex) {
-                boolean matches = ex.isInitialized() && (Boolean) ex.getReturned().get();
+                boolean matches = ex.isInitialized() && (Boolean) ex.getReturned();
                 if (matches) {
                     result.add((A) ex.getLastIteration().getValue());
                 }

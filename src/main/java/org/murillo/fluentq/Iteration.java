@@ -5,9 +5,9 @@ import java.util.Optional;
 
 public interface Iteration<T, R> extends Comparable, Serializable {
 
-    Optional<R> breakLoop();
+    R breakLoop();
 
-    Optional<R> breakLoop(Optional<R> returned);
+    R breakLoop(R returned);
 
     int getIndex();
 
