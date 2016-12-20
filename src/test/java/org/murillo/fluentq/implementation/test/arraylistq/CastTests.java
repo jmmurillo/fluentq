@@ -19,8 +19,8 @@ public class CastTests {
     @Test
     public void cast_happypath() {
         ListQ<Number> numbers = list.cast(Number.class);
-        int[] expected = numbers.flow(ListQFuncs::toIntArray, 0);
-        int[] actual = list.flow(ListQFuncs::toIntArray, 0);
+        int[] expected = numbers.extend(ListQFuncs::toIntArray, 0);
+        int[] actual = list.extend(ListQFuncs::toIntArray, 0);
         Assert.assertArrayEquals(expected, actual);
         Assert.assertNotSame(numbers, list);
     }

@@ -469,8 +469,13 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
     
     @Override
-    public ListQ<T> flowIdentity(){
+    public ListQ<T> insideIdentity(){
         return this.innerList;
+    }
+    
+    @Override
+    public EphemeralListQ<T> outsideIdentity(){
+        return this;
     }
     
 //<editor-fold defaultstate="collapsed" desc="List delegates">

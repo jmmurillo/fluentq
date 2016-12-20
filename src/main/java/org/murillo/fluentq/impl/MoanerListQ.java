@@ -679,23 +679,18 @@ class MoanerListQ<T> implements ListQ<T> {
         throw moan();
     }
     
-    @Override
-    public <S> S flow(Function<ListQ<T>, S> func) {
-        throw moan();
-    }
-    
     public static RuntimeException moan() {
         throw new IllegalStateException("The ephemeral list cannot be used again because it has already been disposed.");
     }
 
     @Override
     public ListQ<T> concatOneSelf(T item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw moan();
     }
 
     @Override
     public ListQ<T> insertOneSelf(int index, T item) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw moan();
     }
 
     @Override
@@ -714,7 +709,12 @@ class MoanerListQ<T> implements ListQ<T> {
     }
     
     @Override
-    public ListQ<T> flowIdentity() {
+    public ListQ<T> insideIdentity() {
+        throw moan();
+    }
+    
+    @Override
+    public ListQ<T> outsideIdentity() {
         throw moan();
     }
 

@@ -13,7 +13,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntBiFunction;
 
-public interface ListQ<T> extends CommonListQ<T>, FluentQ<ListQ<T>>, java.io.Serializable {
+public interface ListQ<T> extends CommonListQ<T>, FluentQ<ListQ<T>, ListQ<T>>, java.io.Serializable {
 
     @Override
     default boolean isDurable() {
