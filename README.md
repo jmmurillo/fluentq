@@ -103,6 +103,18 @@ if(fluent.any())
 Many more methods are available, most of them should be intuitive and self-explained in their use, try experimenting with them.
 
 ###How fluent methods work
+Unlike Stream or LINQ, **FluentQ is not lazily evaluated**. Instead it relies on another strategy to help resource economy: performing operations in-place without destroying the original data. This is achieved by differenctiating between **durable** and **ephemeral** collections. Collections you may want to track along your code should be *durable*, while temporary collections derived from queries can be *ephemeral*. The lattest have the peculiarity that operations can "destroy" or overwrite their content and nobody would get hurt. Let's show this whith an example:
+```java
+ArrayListQ<MyClass> fluent;
+...
+Optional <MyField> value = fluent //durable
+   .distinct() //ephemeral
+   .where(x -> x.property != null) //ephemeral
+   .select(x -> x.property.field) //epehemeral
+   .last(); //element
+```
+To make an ephemeral list durable call `hold()`.
+
 TBC.
 
 ##Advanced features
@@ -124,3 +136,4 @@ TBC.
 ###Fluent API extension
 
 TBC.
+
