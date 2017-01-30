@@ -125,6 +125,23 @@ ListQ<MyField> fields = fluent //durable
    .hold(); //durable
 ```
 
+Finally, you can force durable lists to operate on themselves (modifying their content!) by calling the versions of the metods suffixed by "-self"
+
+ -  whereSelf
+ - concatSelf
+ - distinctSelf
+ - orderSelf
+ - etc.
+
+For example:
+```java
+ArrayListQ<MyClass> fluent;
+...
+fluent //durable
+   .distinctSelf() //same durable (modified)
+   .whereSelf(x -> x.property != null); //same durable (modified)
+```
+
 ##Advanced features
 ###Accessing elements indices
 Sometimes it can be useful to know the index of the element you are processing. A possible solution for this can be to manipulate element-index pairs, which can be done by the following code:
