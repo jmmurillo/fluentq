@@ -214,5 +214,6 @@ public interface FluentQ<A, Z> {
     
     default Z outsideIdentity() {
         return ((Z) this);
-    }
+    }   
+    
 }

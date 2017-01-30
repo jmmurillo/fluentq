@@ -953,8 +953,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="groupBy">
     @Override
-    public <K> HashMap<K, ListQ<T>> groupBy(Function<T, K> keySelector) {
-        HashMap<K, ListQ<T>> result = new HashMap<>();
+    public <K> HashMapQ<K, ListQ<T>> groupBy(Function<T, K> keySelector) {
+        HashMapQ<K, ListQ<T>> result = new HashMapQ<>();
         for (T item : this) {
             K key = keySelector.apply(item);
             groupKeyValue(result, key, item);
@@ -963,8 +963,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public <K> HashMap<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector) {
-        HashMap<K, ListQ<T>> result = new HashMap<>();
+    public <K> HashMapQ<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector) {
+        HashMapQ<K, ListQ<T>> result = new HashMapQ<>();
         try {
             for (int i = 0; i < this.size(); i++) {
                 T item = this.get(i);
@@ -1045,8 +1045,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="toMap">
     @Override
-    public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector) {
-        HashMap<K, V> result = new HashMap<>();
+    public <K, V> HashMapQ<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector) {
+        HashMapQ<K, V> result = new HashMapQ<>();
         for (T item : this) {
             K key = keySelector.apply(item);
             V value = valueSelector.apply(item);
@@ -1056,9 +1056,9 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
     
     @Override
-    public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector,
-        BiConsumer<Map.Entry<K,V>, HashMap<K, V>> conflictResolver){
-        HashMap<K, V> result = new HashMap<>();
+    public <K, V> HashMapQ<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector,
+        BiConsumer<Map.Entry<K,V>, HashMapQ<K, V>> conflictResolver){
+        HashMapQ<K, V> result = new HashMapQ<>();
         for (T item : this) {
             K key = keySelector.apply(item);
             V value = valueSelector.apply(item);
@@ -1072,8 +1072,8 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector) {
-        HashMap<K, V> result = new HashMap<>();
+    public <K, V> HashMapQ<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector) {
+        HashMapQ<K, V> result = new HashMapQ<>();
         boolean breakNext = false;
         for (int i = 0; i < this.size(); i++) {
             T item = this.get(i);
@@ -1108,10 +1108,10 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return result;
     }
     
-        @Override
-    public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector,
-            BiConsumer<Map.Entry<K,V>, HashMap<K, V>> conflictResolver){
-        HashMap<K, V> result = new HashMap<>();
+    @Override
+    public <K, V> HashMapQ<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector,
+            BiConsumer<Map.Entry<K,V>, HashMapQ<K, V>> conflictResolver){
+        HashMapQ<K, V> result = new HashMapQ<>();
         boolean breakNext = false;
         for (int i = 0; i < this.size(); i++) {
             T item = this.get(i);
@@ -1210,6 +1210,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         } catch (BreakLoopException e) {
         }
     }
+    
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="reverse">
@@ -1599,6 +1600,16 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     @Override
     public ListQ<T> copy(){
         return new ArrayListQ<>(this);
+    }
+
+    @Override
+    public boolean isDurable() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isEphemeral() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     private static class SelfImplementation {

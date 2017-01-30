@@ -27,3 +27,13 @@ dependencies {
     //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }
+
+sourceCompatibility = 1.8
+version = '0.0.5'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'FluentQ',
+                   'Implementation-Version': '0.0.5',
+                   'Specification-Version': '0.0.5'
+    }
+}

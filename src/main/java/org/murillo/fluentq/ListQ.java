@@ -7,13 +7,12 @@ package org.murillo.fluentq;
 
 import java.util.Collection;
 import java.util.Random;
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntBiFunction;
 
-public interface ListQ<T> extends CommonListQ<T>, FluentQ<ListQ<T>, ListQ<T>>, java.io.Serializable {
+public interface ListQ<T> extends CommonListQ<T, ListQ<T>, ListQ<T>>, java.io.Serializable {
 
     @Override
     default boolean isDurable() {
@@ -36,7 +35,7 @@ public interface ListQ<T> extends CommonListQ<T>, FluentQ<ListQ<T>, ListQ<T>>, j
     ListQ<T> distinctSelf();
 
     ListQ<T> distinctSelf(BiPredicate<T, T> equalTest);
-
+    
     ListQ<T> insertSelf(int index, Collection<T> collection);
 
     ListQ<T> insertSelf(int index, T... items);

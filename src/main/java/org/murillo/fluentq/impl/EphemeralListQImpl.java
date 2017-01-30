@@ -3,7 +3,6 @@ package org.murillo.fluentq.impl;
 import org.murillo.fluentq.Iteration;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -276,12 +275,12 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public <K> HashMap<K, ListQ<T>> groupBy(Function<T, K> keySelector) {
+    public <K> HashMapQ<K, ListQ<T>> groupBy(Function<T, K> keySelector) {
         return innerList.groupBy(keySelector);
     }
 
     @Override
-    public <K> HashMap<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector) {
+    public <K> HashMapQ<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector) {
         return innerList.groupByI(keySelector);
     }
 
@@ -296,22 +295,22 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector) {
+    public <K, V> HashMapQ<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector) {
         return innerList.toMap(keySelector, valueSelector);
     }
 
     @Override
-    public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector) {
+    public <K, V> HashMapQ<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector) {
         return innerList.toMapI(keySelector, valueSelector);
     }
 
     @Override
-    public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMap<K, V>> conflictResolver) {
+    public <K, V> HashMapQ<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMapQ<K, V>> conflictResolver) {
         return innerList.toMap(keySelector, valueSelector, conflictResolver);
     }
 
     @Override
-    public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMap<K, V>> conflictResolver) {
+    public <K, V> HashMapQ<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMapQ<K, V>> conflictResolver) {
         return innerList.toMapI(keySelector, valueSelector, conflictResolver);
     }
 
@@ -862,12 +861,12 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
         }
 
         @Override
-        public <K> HashMap<K, ListQ<T>> groupBy(Function<T, K> keySelector) {
+        public <K> HashMapQ<K, ListQ<T>> groupBy(Function<T, K> keySelector) {
             throw moan();
         }
 
         @Override
-        public <K> HashMap<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector) {
+        public <K> HashMapQ<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector) {
             throw moan();
         }
 
@@ -987,22 +986,22 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
         }
 
         @Override
-        public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector) {
+        public <K, V> HashMapQ<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector) {
             throw moan();
         }
 
         @Override
-        public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector) {
+        public <K, V> HashMapQ<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector) {
             throw moan();
         }
 
         @Override
-        public <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMap<K, V>> conflictResolver) {
+        public <K, V> HashMapQ<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMapQ<K, V>> conflictResolver) {
             throw moan();
         }
 
         @Override
-        public <K, V> HashMap<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMap<K, V>> conflictResolver) {
+        public <K, V> HashMapQ<K, V> toMapI(Function<Iteration<T, K>, K> keySelector, Function<Iteration<T, V>, V> valueSelector, BiConsumer<Map.Entry<K, V>, HashMapQ<K, V>> conflictResolver) {
             throw moan();
         }
 

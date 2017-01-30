@@ -1,7 +1,6 @@
 package org.murillo.fluentq;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,8 +16,9 @@ import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntBiFunction;
 import java.util.function.ToLongFunction;
+import org.murillo.fluentq.impl.HashMapQ;
 
-public interface CommonListQ<T> extends List<T>, java.io.Serializable {
+public interface CommonListQ<T, A, Z> extends List<T>, FluentQ<A, Z>, java.io.Serializable {
 
     boolean isDurable();
 
@@ -56,9 +56,9 @@ public interface CommonListQ<T> extends List<T>, java.io.Serializable {
 
     void forEachReverse(Consumer<T> action);
 
-    <K> HashMap<K, ListQ<T>> groupBy(Function<T, K> keySelector);
+    <K> HashMapQ<K, ListQ<T>> groupBy(Function<T, K> keySelector);
 
-    <K> HashMap<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector);
+    <K> HashMapQ<K, ListQ<T>> groupByI(Function<Iteration<T, K>, K> keySelector);
 
     Optional<T> last() throws IndexOutOfBoundsException;
 
@@ -106,15 +106,15 @@ public interface CommonListQ<T> extends List<T>, java.io.Serializable {
 
     ListQ<Iteration<T, T>> toIterations();
 
-    <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector);
+    <K, V> HashMapQ<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector);
 
-    <K, V> HashMap<K, V> toMapI(Function<Iteration<T,K>, K> keySelector, Function<Iteration<T,V>, V> valueSelector);
+    <K, V> HashMapQ<K, V> toMapI(Function<Iteration<T,K>, K> keySelector, Function<Iteration<T,V>, V> valueSelector);
     
-    <K, V> HashMap<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector,
-            BiConsumer<Map.Entry<K,V>, HashMap<K, V>> conflictResolver);
+    <K, V> HashMapQ<K, V> toMap(Function<T, K> keySelector, Function<T, V> valueSelector,
+            BiConsumer<Map.Entry<K,V>, HashMapQ<K, V>> conflictResolver);
 
-    <K, V> HashMap<K, V> toMapI(Function<Iteration<T,K>, K> keySelector, Function<Iteration<T,V>, V> valueSelector,
-            BiConsumer<Map.Entry<K,V>, HashMap<K, V>> conflictResolver);
+    <K, V> HashMapQ<K, V> toMapI(Function<Iteration<T,K>, K> keySelector, Function<Iteration<T,V>, V> valueSelector,
+            BiConsumer<Map.Entry<K,V>, HashMapQ<K, V>> conflictResolver);
 
     String toString(String separator);
 
@@ -182,4 +182,24 @@ public interface CommonListQ<T> extends List<T>, java.io.Serializable {
 
     EphemeralListQ<T> whereI(Predicate<Iteration<T, Boolean>> selector);
 
+    default Z fluentForEach(Consumer<T> action){
+        this.forEach(action);
+        return (Z)this;
+    }
+    
+    default Z fluentForEachReverse(Consumer<T> action){
+        this.forEachReverse(action);
+        return (Z)this;
+    }
+
+    default Z fluentForEachI(Consumer<Iteration<T, Void>> action){
+        this.forEachI(action);
+        return (Z)this;
+    }
+
+    default Z fluentForEachIReverse(Consumer<Iteration<T, Void>> action){
+        this.forEachIReverse(action);
+        return (Z)this;
+    }
+    
 }
