@@ -17,8 +17,8 @@ public class SelectTests {
     
     @Test
     public void select_happypath() {
-        ListQ<Character> alpha = list.select(x -> x.charAt(0));
-        ListQ<Integer> numeric = list.select(x -> (int)x.charAt(0));
+        ListQ<Character> alpha = list.select(x -> x.charAt(0)).hold();
+        ListQ<Integer> numeric = list.select(x -> (int)x.charAt(0)).hold();
         Assert.assertArrayEquals(alpha.toTypedArray(Character.class), new Character[]{'a','2','!','3','e'});
         Assert.assertArrayEquals(numeric.toTypedArray(Integer.class), new Integer[]{97,50,33,51,101});
         Assert.assertArrayEquals(list.toTypedArray(String.class), new String[]{"a","2","!","3","e"});
@@ -26,7 +26,10 @@ public class SelectTests {
    
     @Test
     public void selectI_happypath() {
-        ListQ<String> indices = list.selectI(x -> x.getValue()+"["+x.getIndex()+"]");
+        ListQ<String> indices = list.selectI(x -> x.getValue()+"["+x.getIndex()+"]")
+                .cast(String.class) //Should not be necessary, compiler bug ??
+                .hold();
+   
         Assert.assertArrayEquals(indices.toTypedArray(String.class), new String[]{"a[0]","2[1]","![2]","3[3]","e[4]"});
         Assert.assertArrayEquals(list.toTypedArray(String.class), new String[]{"a","2","!","3","e"});
     }

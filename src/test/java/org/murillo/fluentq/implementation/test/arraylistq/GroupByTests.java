@@ -22,8 +22,8 @@ public class GroupByTests {
         HashMap<Character, ListQ<String>> groupBy1 = list.groupBy(x -> x.charAt(0));
         
         ListQ<Map.Entry<Character, ListQ<String>>> newList = ArrayListQ.ofEntries(groupBy1).orderBySelf(x -> x.getKey());
-        ListQ<Character> keys = newList.select(x -> x.getKey());
-        ListQ<ListQ<String>> values = newList.select(x -> x.getValue());
+        ListQ<Character> keys = newList.select(x -> x.getKey()).hold();
+        ListQ<ListQ<String>> values = newList.select(x -> x.getValue()).hold();
         
         Assert.assertEquals(keys, ArrayListQ.of('!','2','3','a','e'));
         Assert.assertEquals(values, ArrayListQ.ofLists(new String[][]{{"!","!!"},{"2","22"},{"3","33"},{"a","aa"},{"e","ee"}}));

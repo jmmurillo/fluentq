@@ -36,11 +36,11 @@ public interface CommonListQ<T, A, Z> extends List<T>, FluentQ<A, Z>, java.io.Se
 
     boolean any();
 
-    <S> ListQ<S> cast(Class<S> clazz);
+    <S> EphemeralListQ<S> cast(Class<S> clazz);
 
-    ListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest);
+    EphemeralListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest);
 
-    ListQ<ListQ<T>> clusterEvery(int numberOfItems);
+    EphemeralListQ<ListQ<T>> clusterEvery(int numberOfItems);
 
     int count();
 
@@ -84,13 +84,13 @@ public interface CommonListQ<T, A, Z> extends List<T>, FluentQ<A, Z>, java.io.Se
 
     Optional<T> randomElement(Random random);
 
-    <S> ListQ<S> select(Function<T, S> selector);
+    <S> EphemeralListQ<S> select(Function<T, S> selector);
 
-    <S> ListQ<S> selectI(Function<Iteration<T, S>, S> selector);
+    <S> EphemeralListQ<S> selectI(Function<Iteration<T, S>, S> selector);
 
-    <S> ListQ<S> selectMany(Function<T, Collection<S>> selector);
+    <S> EphemeralListQ<S> selectMany(Function<T, Collection<S>> selector);
 
-    <S> ListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector);
+    <S> EphemeralListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector);
 
     Optional<T> single();
 

@@ -253,7 +253,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 result.add(toMap.get(i));
             }
         } else {
-            result = (ArrayListQ<S>) iterations.orderSelf().select(iteration -> iteration.getValue());
+            result = (ArrayListQ<S>) iterations.orderSelf().select(iteration -> iteration.getValue()).hold();
         }
         return result;
     }
@@ -412,16 +412,16 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="select">
     @Override
-    public <S> ListQ<S> select(Function<T, S> selector) {
+    public <S> EphemeralListQ<S> select(Function<T, S> selector) {
         ArrayListQ<S> result = new ArrayListQ<>(this.size());
         for (T item : this) {
             result.add(selector.apply(item));
         }
-        return result;
+        return EphemeralListQImpl.wrap(result);
     }
 
     @Override
-    public <S> ListQ<S> selectI(Function<Iteration<T, S>, S> selector) {
+    public <S> EphemeralListQ<S> selectI(Function<Iteration<T, S>, S> selector) {
         ArrayListQ<S> result = new ArrayListQ<>(this.size());
         try {
             for (int i = 0; i < this.size(); i++) {
@@ -434,7 +434,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 result.add((S) ex.getReturned());
             }
         }
-        return result;
+        return EphemeralListQImpl.wrap(result);
     }
 
 //</editor-fold>
@@ -742,12 +742,12 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 //</editor-fold>
 
     @Override
-    public <S> ListQ<S> cast(Class<S> clazz) {
+    public <S> EphemeralListQ<S> cast(Class<S> clazz) {
         ArrayListQ<S> result = new ArrayListQ<>(this.size());
         for (T item : this) {
             result.add(clazz.cast(item));
         }
-        return result;
+        return EphemeralListQImpl.wrap(result);
     }
 
 //<editor-fold defaultstate="collapsed" desc="numerical">
@@ -996,7 +996,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 
 //<editor-fold defaultstate="collapsed" desc="cluster">
     @Override
-    public ListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest) {
+    public EphemeralListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest) {
         ArrayList<T> prototypes = new ArrayList<>();
         ArrayListQ<ListQ<T>> result = new ArrayListQ<>();
         for (T item : this) {
@@ -1011,7 +1011,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             }
             cluster.add(item);
         }
-        return result;
+        return EphemeralListQImpl.wrap(result);
     }
 
     private static <T> int lookForPrototype(T item, ArrayList<T> prototypes, BiPredicate<T, T> equalTest) {
@@ -1025,7 +1025,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     }
 
     @Override
-    public ListQ<ListQ<T>> clusterEvery(int numberOfItems) {
+    public EphemeralListQ<ListQ<T>> clusterEvery(int numberOfItems) {
         ArrayListQ<ListQ<T>> result = new ArrayListQ<>();
         ListQ<T> currentList = null;
         int modular;
@@ -1039,7 +1039,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
             currentList.add(item);
         }
 
-        return result;
+        return EphemeralListQImpl.wrap(result);
     }
 //</editor-fold>
 
@@ -1153,16 +1153,16 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="selectMany">
     @Override
-    public <S> ListQ<S> selectMany(Function<T, Collection<S>> selector) {
+    public <S> EphemeralListQ<S> selectMany(Function<T, Collection<S>> selector) {
         ArrayListQ<S> result = new ArrayListQ<S>(this.size());
         for (T item : this) {
             result.addAll(selector.apply(item));
         }
-        return result;
+        return EphemeralListQImpl.wrap(result);
     }
 
     @Override
-    public <S> ListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector) {
+    public <S> EphemeralListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector) {
         ArrayListQ<S> result = new ArrayListQ<S>(this.size());
         try {
             int i = 0;
@@ -1176,7 +1176,7 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
                 result.addAll((Collection<S>) ex.getReturned());
             }
         }
-        return result;
+        return EphemeralListQImpl.wrap(result);
     }
 //</editor-fold>
 

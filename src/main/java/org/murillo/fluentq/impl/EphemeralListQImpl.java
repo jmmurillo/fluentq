@@ -75,12 +75,12 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public <S> ListQ<S> select(Function<T, S> selector) {
+    public <S> EphemeralListQ<S> select(Function<T, S> selector) {
         return innerList.select(selector);
     }
 
     @Override
-    public <S> ListQ<S> selectI(Function<Iteration<T, S>, S> selector) {
+    public <S> EphemeralListQ<S> selectI(Function<Iteration<T, S>, S> selector) {
         return innerList.selectI(selector);
     }
 
@@ -210,7 +210,7 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public <S> ListQ<S> cast(Class<S> clazz) {
+    public <S> EphemeralListQ<S> cast(Class<S> clazz) {
         return innerList.cast(clazz);
     }
 
@@ -285,12 +285,12 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public ListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest) {
+    public EphemeralListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest) {
         return innerList.cluster(equalTest);
     }
 
     @Override
-    public ListQ<ListQ<T>> clusterEvery(int numberOfItems) {
+    public EphemeralListQ<ListQ<T>> clusterEvery(int numberOfItems) {
         return innerList.clusterEvery(numberOfItems);
     }
 
@@ -315,12 +315,12 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
     }
 
     @Override
-    public <S> ListQ<S> selectMany(Function<T, Collection<S>> selector) {
+    public <S> EphemeralListQ<S> selectMany(Function<T, Collection<S>> selector) {
         return innerList.selectMany(selector);
     }
 
     @Override
-    public <S> ListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector) {
+    public <S> EphemeralListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector) {
         return innerList.selectManyI(selector);
     }
 
@@ -811,17 +811,17 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
         }
 
         @Override
-        public <S> ListQ<S> cast(Class<S> clazz) {
+        public <S> EphemeralListQ<S> cast(Class<S> clazz) {
             throw moan();
         }
 
         @Override
-        public ListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest) {
+        public EphemeralListQ<ListQ<T>> cluster(BiPredicate<T, T> equalTest) {
             throw moan();
         }
 
         @Override
-        public ListQ<ListQ<T>> clusterEvery(int numberOfItems) {
+        public EphemeralListQ<ListQ<T>> clusterEvery(int numberOfItems) {
             throw moan();
         }
 
@@ -931,22 +931,22 @@ public class EphemeralListQImpl<T> implements EphemeralListQ<T> {
         }
 
         @Override
-        public <S> ListQ<S> select(Function<T, S> selector) {
+        public <S> EphemeralListQ<S> select(Function<T, S> selector) {
             throw moan();
         }
 
         @Override
-        public <S> ListQ<S> selectI(Function<Iteration<T, S>, S> selector) {
+        public <S> EphemeralListQ<S> selectI(Function<Iteration<T, S>, S> selector) {
             throw moan();
         }
 
         @Override
-        public <S> ListQ<S> selectMany(Function<T, Collection<S>> selector) {
+        public <S> EphemeralListQ<S> selectMany(Function<T, Collection<S>> selector) {
             throw moan();
         }
 
         @Override
-        public <S> ListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector) {
+        public <S> EphemeralListQ<S> selectManyI(Function<Iteration<T, Collection<S>>, Collection<S>> selector) {
             throw moan();
         }
 
