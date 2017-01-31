@@ -26,8 +26,7 @@ public class SelectTests {
    
     @Test
     public void selectI_happypath() {
-        ListQ<String> indices = list.selectI(x -> x.getValue()+"["+x.getIndex()+"]")
-                .cast(String.class) //Should not be necessary, compiler bug ??
+        ListQ<String> indices = list.<String>selectI(x -> x.getValue()+"["+x.getIndex()+"]")
                 .hold();
    
         Assert.assertArrayEquals(indices.toTypedArray(String.class), new String[]{"a[0]","2[1]","![2]","3[3]","e[4]"});
