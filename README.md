@@ -55,7 +55,7 @@ ArrayListQ<Map.Entry<String, MyClass>> fluent3 = ArrayListQ.ofEntries(map);
 ...
 ```
 
-For a more advanced way of creating an ArrayListQ you can use the static 'generate' method, see Advanced features below.
+For a more advanced way of creating an ArrayListQ you can use the static ``generate(Function<Iteration<A, A>, A> generator)`` method, see Advanced features below.
 ```java
 int maxIterations;
 ...
@@ -71,7 +71,7 @@ fluent.add(obj1); //Inherited, non-fluent
 boolean removed = fluent.remove(obj2); //Inherited, non-fluent
 ```
 
-###Basic queries
+###Queries
 Once you have your fluent list you can perform some basic queries on it, for example
 ```java
 ArrayListQ<MyClass> fluent;
@@ -84,10 +84,17 @@ Optional <MyField> value = fluent
 or you can use some more advanced methods for more complex processing
 
 ```java
-ArrayListQ<MyAlbums> fluent;
+ArrayListQ<MyAlbum> fluent;
 ...
-for(Map<Artist, ListQ<MyAbums>> group : fluent.groupBy(x -> x.artist))
-TBC.
+MapQ<MyArtist, MyAlbum> = fluent
+   .groupBy(x -> x.artist) //Group the albums by artist
+   .aside(map -> 
+      //For each artist, sort the albums by date
+      map.values()
+         .forEach(entry -> 
+            entry.getValue().orderBySelf(album -> album.releaseDate))
+   );
+}
 ```
 
 You can also apply some simple numerical aggregation methods to your lists, most of them give the option to calculate them as an integer (`long`) or as a floating point number (`double`)
@@ -100,49 +107,8 @@ if(fluent.any())
 	double mean = fluent.sumAsDouble() / fluent.count();
 ```
 
-Many more methods are available, most of them should be intuitive and self-explained in their use, try experimenting with them.
+Many more methods are available, most of them should be intuitive and self-explained in their use, try experimenting with them!
 
-###How fluent methods work
-Unlike Stream or LINQ, **FluentQ is not lazily evaluated**. Instead it relies on another strategy to help resource economy: performing operations in-place without destroying the original data. This is achieved by differenctiating between **durable** and **ephemeral** collections. Collections you may want to track along your code should be *durable*, while temporary collections derived from queries can be *ephemeral*. The latest have the peculiarity that operations can "destroy" or overwrite their content and nobody would get hurt.
-Let's show this whith an example:
-```java
-ArrayListQ<MyClass> fluent;
-...
-Optional <MyField> value = fluent //durable
-   .distinct() //ephemeral
-   .where(x -> x.property != null) //same ephemeral instance
-   .select(x -> x.property.field) //new ephemeral
-   .last(); //element
-```
-In the example, when `distinct()` is called, a copy of `fluent` is internally made to preserve the original list intact. From then on, chained calls will modify that same copy (*in-place*) to save some resources. When `select(...)` is called a new ephemeral instance is returned, as it may contain elements of other class or type (`MyField` objects in the example). Finally `last()` is called and a single element is returned.
-
-Sometimes you may want to make an *ephemeral* list *durable*, for which you can call `hold()`, which performs with (virtually) zero cost.
-```java
-ArrayListQ<MyClass> fluent;
-...
-ListQ<MyField> fields = fluent //durable
-   .select(x -> x.property.field) //new ephemeral
-   .hold(); //durable
-```
-
-Finally, you can force durable lists to operate on themselves (modifying their content!) by calling the versions of the metods suffixed by "-self"
-
- -  whereSelf
- - concatSelf
- - distinctSelf
- - orderSelf
- - etc.
-
-For example:
-```java
-ArrayListQ<MyClass> fluent;
-...
-fluent //durable
-   .distinctSelf() //same durable (modified)
-   .whereSelf(x -> x.property != null); //same durable (modified)
-```
-
-##Advanced features
 ###Accessing elements indices
 Sometimes it can be useful to know the index of the element you are processing. A possible solution for this can be to manipulate element-index pairs, which can be done by the following code:
 ```java
@@ -170,10 +136,53 @@ ArrayListQ<MyClass> fluent;
 for(MyClass element : fluent.whereI(x -> x.getIndex()%2 == 0))
 ...
 ```
+
+###How fluent methods work
+Unlike Stream or LINQ, **FluentQ is not lazily evaluated**. Instead it relies on another strategy to help resource economy: performing operations in-place without destroying the original data. This is achieved by differenctiating between **durable** and **ephemeral** collections. Collections you may want to track along your code should be *durable*, while temporary collections derived from queries can be *ephemeral*. The latest have the peculiarity that operations can "destroy" or overwrite their content and nobody would get hurt.
+Let's show this whith an example:
+```java
+ArrayListQ<MyClass> fluent;
+...
+Optional <MyField> value = fluent //durable
+   .distinct() //ephemeral
+   .where(x -> x.property != null) //same ephemeral instance
+   .select(x -> x.property.field) //new ephemeral
+   .last(); //element
+```
+In the example, when `distinct()` is called, a copy of `fluent` is internally made to preserve the original list intact. From then on, chained calls will modify that same copy (*in-place*) to save some resources. When `select(...)` is called a new ephemeral instance is returned, as it may contain elements of other class or type (`MyField` objects in the example). Finally `last()` is called and a single element is returned.
+
+Sometimes you may want to make an *ephemeral* list *durable*, for which you can call `hold()`, which performs with (virtually) zero cost.
+```java
+ArrayListQ<MyClass> fluent;
+...
+ListQ<MyField> fields = fluent //durable
+   .select(x -> x.property.field) //new ephemeral
+   .hold(); //durable
+```
+
+Finally, you can force durable lists to operate on themselves (modifying their content!) by calling the versions of the metods suffixed by "-Self"
+
+ -  whereSelf
+ - concatSelf
+ - distinctSelf
+ - orderSelf
+ - etc.
+
+For example:
+```java
+ArrayListQ<MyClass> fluent;
+...
+fluent //durable
+   .distinctSelf() //same durable (modified)
+   .whereSelf(x -> x.property != null); //same durable (modified)
+```
+
+##Advanced features
+
+###Generating lists
 TBC.
 ###Interrupting queries
 TBC.
 ###Fluent API extension
-
 TBC.
 
