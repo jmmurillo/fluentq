@@ -55,7 +55,7 @@ ArrayListQ<Map.Entry<String, MyClass>> fluent3 = ArrayListQ.ofEntries(map);
 ...
 ```
 
-For a more advanced way of creating an ArrayListQ you can use the static ``generate(Function<Iteration<A, A>, A> generator)`` method, see Advanced features below.
+For a more advanced way of creating an ArrayListQ you can use the static ``generate(Function<Iteration<A, A>, A> generator)`` method, see ***Special features*** below.
 ```java
 int maxIterations;
 ...
@@ -159,6 +159,7 @@ ListQ<MyField> fields = fluent //durable
    .select(x -> x.property.field) //new ephemeral
    .hold(); //durable
 ```
+Bear in mind that *ephemeral* lists made *durable* by calling ``hold()`` **are not usable anymore** and will throw an ``IllegalStateException`` on any attempt of operation.
 
 Finally, you can force durable lists to operate on themselves (modifying their content!) by calling the versions of the metods suffixed by "-Self"
 
@@ -177,12 +178,94 @@ fluent //durable
    .whereSelf(x -> x.property != null); //same durable (modified)
 ```
 
-##Advanced features
+##Special features
 
+###Interrupting queries
+
+Besides giving access to elements' indices, methods handling ``Iteration`` objects have a pretty odd feature: you can interrupt queries' loops. By doing this the internal loop in which the operations are based can be broken and the flow resumes seamlessly. Let's look an example:
+```java
+ArrayListQ<MyClass> fluent;
+...
+fluent.forEachI(x -> {
+   if( stopCondition(x) ) x.breakLoop(); //Stops the loop
+   else {
+      ... //Process x
+   }
+});
+```
+If appropriate, you can choose to return a last element before interrupting the processing by specifying the value in the ``breakLoop`` call, for example:
+```java
+ArrayListQ<MyClass> fluent;
+...
+ListQ<MyProperty> properties = fluent.<MyProperty>selectI(x -> {
+   if( stopCondition(x) ) {
+      return x.breakLoop(x.property); //Stops the loop returning a last element which will be included in the result
+   } else {
+      return x.property;
+   }
+}).order().hold();
+```
+Bear in mind that ``breakLoop`` works by throwing a ``BreakLoopException`` so it will not work if that exception is caught inside the call.
 ###Generating lists
 TBC.
-###Interrupting queries
-TBC.
 ###Fluent API extension
-TBC.
+The following feature is implemented in the ``FluentQ`` interface, which provides a nice way to extend a fluent API of classes you can't or don't want to modify or extend. Therefore, although the examples are based on ``ArrayListQ``, this feature can be part of any class implementing ``FluentQ``, experiment with your own classes!
 
+####extend
+With this method you can call helper methods without breaking the fluent call chain. Look a the following example:
+```java
+ArrayListQ<MyClass> fluent;
+public static MyAnotherClass myMethod(ListQ<MyClass> list, int parameter){
+   ... //Do some cool stuff
+}
+...
+MyProperty property = fluent
+   .where(x -> x != null && x.someBoolean)
+   .extend(ThisClass::myMethod, 123)
+   .anotherProperty;
+```
+This can be seen as some *fluent syntactic sugar* for the ordinary equivalent*
+```java
+MyProperty property = ThisClass.myMethod(
+   fluent
+      .where(x -> x != null && x.someBoolean)
+      .hold(),
+   123);
+```
+except for the detail that ``extend`` passes a durable list for you (you don't have to call ``hold``), so you don't have to deal with ephemeral lists on your methods or lambdas. 
+
+``ListQFuncs`` class offers some static methods suitable for this kind of use, for example
+```java
+ArrayListQ<Float> list;
+...
+int[] array = list.extend(ListQFuncs::toIntArray, 0); //Transform to int[] and substitute nulls for 0
+```
+
+####aside
+This method allows executing some fluent code without altering the fluent chain, the method returns the same object it was called on, regardless of the return of the specified method or lambda. This is difficult to explain with words, so let's look at some code:
+```java
+public static MyAnotherClass myMethod(ListQ<MyClass> list, int parameter){
+   ... //Do some cool stuff
+}
+ArrayListQ<MyClass> fluent;
+...
+MyProperty property = fluent
+   .where(x -> x != null && x.someBoolean) //ephemeral list
+   .aside(ThisClass::myMethod, 123) //Inert regarding the fluent chain
+   .select(x -> x.property) //same ephemeral list returned by 'where'
+   .last(p -> someCondition(p));
+```
+or the already shown example
+```java
+ArrayListQ<MyAlbum> fluent;
+...
+MapQ<MyArtist, MyAlbum> = fluent
+   .groupBy(x -> x.artist) //Group the albums by artist
+   .aside(map -> //The chain still returns the result of 'groupBy'
+      //For each artist, sort the albums by date
+      map.values()
+         .forEach(entry -> 
+            entry.getValue().orderBySelf(album -> album.releaseDate))
+   );
+}
+```
