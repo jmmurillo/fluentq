@@ -227,15 +227,15 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
 
-    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iterable<Iteration<S, ?>> iterations) {
+    public static <S> ArrayListQ<S> fromIterations(Iterable<Iteration<S, ?>> iterations, boolean keepGaps) {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
 
-    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Iterator<Iteration<S, ?>> iterations) {
+    public static <S> ArrayListQ<S> fromIterations(Iterator<Iteration<S, ?>> iterations, boolean keepGaps) {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
 
-    public static <S> ArrayListQ<S> fromIterations(boolean keepGaps, Collection<Iteration<S, ?>> iterations) {
+    public static <S> ArrayListQ<S> fromIterations(Collection<Iteration<S, ?>> iterations, boolean keepGaps) {
         return _fromIterations(keepGaps, new ArrayListQ<>(iterations));
     }
 
@@ -1600,16 +1600,6 @@ public class ArrayListQ<T> extends ArrayList<T> implements ListQ<T> {
     @Override
     public ListQ<T> copy(){
         return new ArrayListQ<>(this);
-    }
-
-    @Override
-    public boolean isDurable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean isEphemeral() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     private static class SelfImplementation {

@@ -6,8 +6,6 @@
 package org.murillo.fluentq.impl;
 
 import org.murillo.fluentq.Iteration;
-import java.util.Optional;
-import org.murillo.fluentq.Iteration;
 
 final class BreakLoopException extends RuntimeException{
 
